@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import com.amann.mimir_downloader.data.Config;
 import com.amann.mimir_downloader.data.LoginUser;
-import com.amann.mimir_downloader.data.MimirUser;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
@@ -23,8 +22,7 @@ import com.google.api.client.util.Joiner;
 import com.google.gson.Gson;
 
 public final class Login {
-  final static GenericUrl USER_SESSION_URL =
-      new GenericUrl("https://class.mimir.io/lms/user_sessions");
+  final static String USER_SESSION_URL = "https://class.mimir.io/lms/user_sessions";
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
   final static HttpRequestFactory requestFactory =
@@ -33,13 +31,11 @@ public final class Login {
 
   public static void getOrUpdateSession(Config config) throws IOException {
     if (config.getSessionToken() != null && config.getSessionId() != null) {
-      // Try to use session token on user_sessions. If that fails we need
-      // to refresh.
-      HttpRequest request = requestFactory
-          .buildGetRequest(USER_SESSION_URL)
-          .setHeaders(createHeaders(config));
+      
       try {
-        request.execute();
+        // Try to execute a request to user_sessions with current credentials.
+        // If that fails we need to refresh.
+        executeAuthedRequest(USER_SESSION_URL, config);
       } catch(HttpResponseException ex) {
         // If we get unauthorized we need to update
         if (ex.getStatusCode() == 401) {
@@ -62,7 +58,7 @@ public final class Login {
         // Triggering login works by sending a POST request with the right data to the
         // USER_SESSION endpoint
         HttpResponse response =
-            requestFactory.buildPostRequest(USER_SESSION_URL, content).execute();
+            requestFactory.buildPostRequest(new GenericUrl(USER_SESSION_URL), content).execute();
         if (updateSession(response, config)) {
           return;
         }
@@ -109,20 +105,27 @@ public final class Login {
 
   private static LoginUser getLoginUser() {
     Scanner s = new Scanner(System.in);
-    System.out.println("Enter your mimir email");
+    System.out.println("Enter your mimir account email");
     String email = s.nextLine();
-    System.out.println("Enter your mimir password");
+    System.out.println("Enter your mimir account password");
     String password = s.nextLine();
     LoginUser user = new LoginUser(email, password);
     return user;
   }
 
-  public static HttpHeaders createHeaders(Config config) {
+  public static HttpHeaders createAuthHeaders(Config config) {
     CookieManager cookieManager = new CookieManager();
     createAndAddCookie(cookieManager, SESSION_TOKEN_COOKIE, config.getSessionToken());
     createAndAddCookie(cookieManager, SESSION_ID_COOKIE, config.getSessionId());
     String cookieString = Joiner.on(';').join(cookieManager.getCookieStore().getCookies());
     return new HttpHeaders().setCookie(cookieString);
+  }
+  
+  public static String executeAuthedRequest(String url, Config config) throws IOException {
+    HttpRequest request = requestFactory
+        .buildGetRequest(new GenericUrl(url))
+        .setHeaders(Login.createAuthHeaders(config));
+    return request.execute().parseAsString();
   }
 
   private static void createAndAddCookie(

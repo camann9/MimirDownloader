@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 
 public final class Util {
   final static Gson gson = new Gson();
+  final static String SESSION_TOKEN_COOKIE = "user_session_token";
+  final static String SESSION_ID_COOKIE = "user_session_id";
   
   public static void createDir(File dir) {
     if (! dir.exists()){
