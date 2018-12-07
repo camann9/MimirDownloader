@@ -1,0 +1,230 @@
+{
+  "assignment":{
+    "id":"sdfsdg-ghfh-546-6578-87897789ty",
+    "courseId":"sdfsdf-fghfgh-fghfgh-dfgdfg-2reret445",
+    "name":"Assignment name",
+    "description":"",
+    "status":"active",
+    "openDate":"2018-12-05T04:59:00.000Z",
+    "dueDate":"2018-12-11T04:59:59.000Z",
+    "lateDays":0,
+    "lateDayPenalty":100.0,
+    "questionOrder":[
+      "g45grgrt-rtyr-jhkh-hjkh-hljkljkljkll",
+      "j67u67j7-ghjg-hjkk-g675-vngyj7678547",
+      "ghjghjjh-7687-4564-5464-fh567456trg4",
+      "fgh567y6-5676-345t-fbrh-5464gdfg4554",
+      "fhfghhgf-4564-5345-dfgt-456456gt5y56"
+    ],
+    "isRedesign":true
+  },
+  "questions":[
+    {
+      "id":"g45grgrt-rtyr-jhkh-hjkh-hljkljkljkll",
+      "prompt":"Long answer",
+      "questionType":"long_answer",
+      "promptImageName":null,
+      "description":"<p>some HTML</p>",
+      "points":5.0,
+      "required":true,
+      "status":"active",
+      "choices":[
+        "",
+        "",
+        "",
+        ""
+      ],
+      "correctChoiceIndex":0,
+      "correctMultiIndexes":[
+
+      ],
+      "solutionComments":[
+
+      ]
+    },
+    {
+      "id":"j67u67j7-ghjg-hjkk-g675-vngyj7678547",
+      "prompt":"Short answer",
+      "questionType":"short_answer",
+      "promptImageName":null,
+      "description":"<p>some HTML</p>",
+      "points":5.0,
+      "required":true,
+      "status":"active",
+      "choices":[
+        "",
+        "",
+        "",
+        ""
+      ],
+      "correctChoiceIndex":0,
+      "correctMultiIndexes":[
+
+      ],
+      "solutionComments":[
+
+      ]
+    },
+    {
+      "id":"ghjghjjh-7687-4564-5464-fh567456trg4",
+      "prompt":"Coding problem",
+      "questionType":"code_area",
+      "promptImageName":null,
+      "description":"<p>some HTML</p>",
+      "points":5.0,
+      "required":true,
+      "status":"active",
+      "choices":[
+        "",
+        "",
+        "",
+        ""
+      ],
+      "correctChoiceIndex":0,
+      "correctMultiIndexes":[
+
+      ],
+      "solutionComments":[
+
+      ]
+    },
+    {
+      "id":"fgh567y6-5676-345t-fbrh-5464gdfg4554",
+      "prompt":"Multiple choice",
+      "questionType":"multiple_choice",
+      "promptImageName":null,
+      "description":"<p>some HTML</p>",
+      "points":2.0,
+      "required":true,
+      "status":"active",
+      "choices":[
+        "Option 1",
+        "Option 2"
+      ],
+      "correctChoiceIndex":0,
+      "correctMultiIndexes":[
+
+      ],
+      "solutionComments":[
+
+      ]
+    }
+  ],
+  "compilatorMap":{
+    "__pairs__":[
+      {
+        "key":"ghjghjjh-7687-4564-5464-fh567456trg4",
+        "value":{
+          "id":"sfdaewff-fge4-sd43-df43-gdst5t4ttgfs",
+          "testableId":"ghjghjjh-7687-4564-5464-fh567456trg4",
+          "type":"QuestionCompilator",
+          "status":"active",
+          "primaryLanguage":"java8",
+          "executionType":"normal",
+          "createdAt":"2018-12-05T02:11:20.000Z",
+          "updatedAt":"2018-12-06T05:12:00.000Z",
+          "name":"Coding problem",
+          "perfectZipFileId":"dasdewwe-ewqr-6575-3t45-575y56y56735",
+          "skeletonZipFileId":"ertg5456-fge45-756u-243r-534tr34t456",
+          "dbSeedFileId":null,
+          "mossResultsId":null,
+          "perfectFilenames":[
+            "Main.java"
+          ],
+          "perfectWorkingState":{
+            "currentFilePath":"Main.java",
+            "fileMap":{
+              "__pairs__":[
+                {
+                  "key":"Main.java",
+                  "value":{
+                    "key":"files/sadadfsd-3453-7686-ger5-rty5675784g/contents/Main.java",
+                    "path":"Main.java",
+                    "filename":"Main.java",
+                    "content":"public class Main {\n  blah blah;\n  }\n}"
+                  }
+                }
+              ]
+            }
+          },
+          "skeletonWorkingState":{
+            "currentFilePath":"Main.java",
+            "fileMap":{
+              "__pairs__":[
+                {
+                  "key":"Main.java",
+                  "value":{
+                    "key":"files/f456567568-35tt-576u-3rr4-56u5667568/contents/Main.java",
+                    "path":"Main.java",
+                    "filename":"Main.java",
+                    "content":"public class Main {\n  ???\n  }\n}"
+                  }
+                }
+              ]
+            }
+          },
+          "testCases":[
+            {
+              "id":"dgdhfgh4-5765-rt54-fgh5-45645y56y577",
+              "compilatorId":"sfdaewff-fge4-sd43-df43-gdst5t4ttgfs",
+              "name":"Unit test case name",
+              "description":"<p>Some html description</p>",
+              "status":"active",
+              "isPartialCredit":false,
+              "testingStatus":"working",
+              "mainFile":"Main.java",
+              "testType":"unit",
+              "visibility":"visible",
+              "createdAt":"2018-12-04T06:40:00.000Z",
+              "updatedAt":"2018-12-05T07:45:00.000Z",
+              "userVisibility":"visible",
+              "weight":5.0,
+              "threshold":100.0,
+              "useTemplateLanguage":false,
+              "failText":"",
+              "input":"Some test case code",
+              "postHook":"",
+              "executionClargs":"",
+              "compileClargs":"",
+              "perfectOutput":"Your result: 0.0\nCorrect result: 0.0",
+              "expectedOutput":""
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "socketToken":"irrelevant_for_export",
+  "socketChannel":"irrelevant_for_export",
+  "course":{
+    "id":"sdfsdf-fghfgh-fghfgh-dfgdfg-2reret445",
+    "name":"Course name",
+    "description":"<p>Introduction to programming concepts, algorithms and computational thinking.</p>",
+    "status":"active",
+    "startDate":"2018-08-27T13:00:00.000Z",
+    "endDate":"2018-12-18T19:03:00.000Z",
+    "showIde":false,
+    "accessCode":"3bbc3b05ec",
+    "instructorAccessCode":"3bbc3b05ec-20753883f26008db582c",
+    "ltiSecret":"2e89fd3f6a55efa72125cd56d9930b1e2b065d2d0956d5dccafb47123ae60cbdc37f977608522260",
+    "lmsXml":"\n    <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <cartridge_basiclti_link xmlns=\"http://www.imsglobal.org/xsd/imslticc_v1p0\"\n    xmlns:blti = \"http://www.imsglobal.org/xsd/imsbasiclti_v1p0\"\n    xmlns:lticm =\"http://www.imsglobal.org/xsd/imslticm_v1p0\"\n    xmlns:lticp =\"http://www.imsglobal.org/xsd/imslticp_v1p0\"\n    xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\"\n    xsi:schemaLocation = \"http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd\n    http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0.xsd\n    http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd\n    http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd\">\n    <blti:title>Mimir Classroom</blti:title>\n    <blti:description>Mimir Classroom&#x27;s LTI Connection</blti:description>\n    <blti:icon></blti:icon>\n    <blti:launch_url>https://class.mimir.io/users/lti_login</blti:launch_url>\n    <blti:extensions platform=\"canvas.instructure.com\">\n    <lticm:property name=\"tool_id\">mimir_platform</lticm:property>\n    <lticm:property name=\"privacy_level\">public</lticm:property>\n    <lticm:property name=\"domain\">https://class.mimir.io/users/lti_login</lticm:property>\n    </blti:extensions>\n    <cartridge_bundle identifierref=\"BLTI001_Bundle\"/>\n    <cartridge_icon identifierref=\"BLTI001_Icon\"/>\n    </cartridge_basiclti_link>\n  ",
+    "sectionSetting":"enabled",
+    "defaultLanguage":"java8",
+    "defaultDbLanguage":"sqlite"
+  },
+  "sectionMap":{
+    "__pairs__":[
+      {
+        "key":"asrew453-g546-8796-ghjg-5675686p7898",
+        "value":{
+          "id":"asrew453-g546-8796-ghjg-5675686p7898",
+          "name":"First section"
+        }
+      }
+    ]
+  },
+  "overrides":[
+
+  ],
+  "canUpdate":true
+}

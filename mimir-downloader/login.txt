@@ -1,0 +1,22 @@
+Example course URLs
+
+https://class.mimir.io/lms/assignments/9ecba34a-62c6-45a4-b24c-eb20b6fa7d5c/edit
+https://class.mimir.io/lms/courses/a89ae18c-d2af-493a-a9fc-08f28f689eaa
+
+Login
+https://class.mimir.io/lms/user_sessions
+
+POST /lms/user_sessions HTTP/1.1
+Host: class.mimir.io
+Accept: application/json
+Origin: https://class.mimir.io
+User-Agent: Blah blah
+Content-Type: application/json
+Referer: https://class.mimir.io/login
+
+{"email":"bob@email.com","password":"password","errorType":"wrong_password","schoolId":null,"notice":null}
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Set-Cookie: user_session_id=bmlXYUxhTGxuSHpaZTJHTnVZRU9SMWNsK2c2SzdraHB5YkUrWjVCUG5SRWw3MTVPSmJUKytsMjJTeGozQld2NS0tQzlCMlRwbm1BODNDRnBwVlZlcVdRdz09--85127ad80f4be7f93204ffabcb2e06a89e564f9a; path=/; expires=Sat, 07 Dec 2019 13:30:07 -0000
+Set-Cookie: user_session_token=aS9MWXdZaVFKaUJXS21JTUJ4a210OFZpTVViaUorRU15OVJBTWhzcllLRm1SejVWV3B5L3RSVDJreUtNOXRtRkJYQmgzajNCN2tEb2VTckdhaXo5TDNDZ0lFeFA4S0FMb004VW96WGVhSUU9LS1TditrQWQxWnl4ck5VM0ZrSHlaOXdnPT0%3D--a209245c7810ed2c980546ffdc52dd62708db813; path=/; expires=Sat, 07 Dec 2019 13:30:07 -0000

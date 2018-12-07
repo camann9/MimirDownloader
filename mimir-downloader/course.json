@@ -1,0 +1,58 @@
+{
+  "course":{
+    "id":"sdfsdf-fghfgh-fghfgh-dfgdfg-2reret445",
+    "name":"Course name",
+    "description":"<p>Course description</p>",
+    "status":"active",
+    "startDate":"2018-08-01T06:00:00.000Z",
+    "endDate":"2018-12-13T12:00:00.000Z",
+    "showIde":false,
+    "accessCode":"dfgdrty6r",
+    "instructorAccessCode":"dfghfghjgh-dshfghjt6u67868",
+    "ltiSecret":"cdfgegskse4hngik457gh8di4nh7fgvhkuh7dr5hgi8x7rmv7iks45o7tig8h4g674",
+    "lmsXml":"\n    <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <cartridge_basiclti_link xmlns=\"http://www.imsglobal.org/xsd/imslticc_v1p0\"\n    xmlns:blti = \"http://www.imsglobal.org/xsd/imsbasiclti_v1p0\"\n    xmlns:lticm =\"http://www.imsglobal.org/xsd/imslticm_v1p0\"\n    xmlns:lticp =\"http://www.imsglobal.org/xsd/imslticp_v1p0\"\n    xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\"\n    xsi:schemaLocation = \"http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd\n    http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0.xsd\n    http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd\n    http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd\">\n    <blti:title>Mimir Classroom</blti:title>\n    <blti:description>Mimir Classroom&#x27;s LTI Connection</blti:description>\n    <blti:icon></blti:icon>\n    <blti:launch_url>https://class.mimir.io/users/lti_login</blti:launch_url>\n    <blti:extensions platform=\"canvas.instructure.com\">\n    <lticm:property name=\"tool_id\">mimir_platform</lticm:property>\n    <lticm:property name=\"privacy_level\">public</lticm:property>\n    <lticm:property name=\"domain\">https://class.mimir.io/users/lti_login</lticm:property>\n    </blti:extensions>\n    <cartridge_bundle identifierref=\"BLTI001_Bundle\"/>\n    <cartridge_icon identifierref=\"BLTI001_Icon\"/>\n    </cartridge_basiclti_link>\n  ",
+    "sectionSetting":"enabled",
+    "defaultLanguage":"java8",
+    "defaultDbLanguage":"sqlite"
+  },
+  "coursework":[
+    {
+      "id":"sdfsdg-ghfh-546-6578-87897789ty",
+      "name":"Assignment name",
+      "status":"active",
+      "workType":"assignment",
+      "openDate":"2018-12-05T04:59:00.000Z",
+      "dueDate":"2018-12-11T04:59:59.000Z",
+      "dueDateWithLateDays":"2018-12-11T04:59:59.000Z",
+      "submissionCount":0,
+      "submittedStudentCount":20
+    }
+  ],
+  "studentCount":30,
+  "allCoursework":[
+    {
+      "id":"sdfsdg-ghfh-546-6578-87897789ty",
+      "name":"Assignment name",
+      "workType":"assignment",
+      "openDate":"2018-12-05T04:59:00.000Z"
+    }
+  ],
+  "latestAnnouncement":null,
+  "canEdit":true,
+  "lessons":[
+
+  ],
+  "announcements":[
+
+  ],
+  "trialStatus":"paid",
+  "currentUser":{
+    "id":"afsdgdfg-34r3-f334-sdf4-dsfgdfh45564",
+    "firstName":"John",
+    "lastName":"Doe",
+    "accountType":"instructor",
+    "profilePicture":"base64 string",
+    "schoolId":"assdgdfg-dfgd-ryy5-45y4-rh566756uy75r",
+    "email":"bob@email.com"
+  }
+}
