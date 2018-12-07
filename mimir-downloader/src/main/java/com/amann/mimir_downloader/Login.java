@@ -19,8 +19,6 @@ import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonObjectParser;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.Joiner;
 import com.google.gson.Gson;
 
@@ -30,10 +28,7 @@ public final class Login {
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
   final static HttpRequestFactory requestFactory =
-      new NetHttpTransport().createRequestFactory(
-          (HttpRequest request) -> {
-            request.setParser(new JsonObjectParser(new GsonFactory()));
-          });
+      new NetHttpTransport().createRequestFactory();
   final static Gson GSON = new Gson();
 
   public static void getOrUpdateSession(Config config) throws IOException {
@@ -44,8 +39,7 @@ public final class Login {
           .buildGetRequest(USER_SESSION_URL)
           .setHeaders(createHeaders(config));
       try {
-        MimirUser user = request.execute().parseAs(MimirUser.class);
-        System.out.println(user.getNotificationToken());
+        request.execute();
       } catch(HttpResponseException ex) {
         // If we get unauthorized we need to update
         if (ex.getStatusCode() == 401) {
@@ -103,6 +97,8 @@ public final class Login {
     Optional<HttpCookie> tokenCookie = allCookies.stream()
         .filter(cookie -> cookie.getName().equals(SESSION_TOKEN_COOKIE)).findAny();
 
+    // If the login failed the cookies will not be present so we return false.
+    // Sadly we still get a 200 response...
     if (!idCookie.isPresent() || !tokenCookie.isPresent()) {
       return false;
     }

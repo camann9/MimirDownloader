@@ -13,5 +13,6 @@ public class MimirDownloader {
     Config config = Util.readConfig(downloaderRoot);
     Login.getOrUpdateSession(config);
     Util.writeConfig(downloaderRoot, config);
+    
   }
 }
