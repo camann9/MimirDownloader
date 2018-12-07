@@ -13,7 +13,6 @@ import com.amann.mimir_downloader.data.LoginUser;
 import com.amann.mimir_downloader.data.MimirUser;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
@@ -46,6 +45,7 @@ public final class Login {
           .setHeaders(createHeaders(config));
       try {
         MimirUser user = request.execute().parseAs(MimirUser.class);
+        System.out.println(user.getNotificationToken());
       } catch(HttpResponseException ex) {
         // If we get unauthorized we need to update
         if (ex.getStatusCode() == 401) {
