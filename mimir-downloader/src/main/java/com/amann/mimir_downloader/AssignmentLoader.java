@@ -26,6 +26,7 @@ public final class AssignmentLoader {
   }
 
   private static Assignment processAssignment(RawAssignment fromJson) {
+    
     return new Assignment();
   }
 }

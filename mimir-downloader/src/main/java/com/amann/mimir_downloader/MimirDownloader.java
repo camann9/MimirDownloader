@@ -13,7 +13,7 @@ import org.apache.commons.cli.ParseException;
 
 import com.amann.mimir_downloader.data.json.CourseAssignmentMetadata;
 import com.amann.mimir_downloader.data.json.Config;
-import com.amann.mimir_downloader.data.json.Course;
+import com.amann.mimir_downloader.data.json.RawCourse;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.google.gson.JsonSyntaxException;
 
@@ -65,11 +65,6 @@ public class MimirDownloader {
     }
     /*
     Course course = CourseLoader.loadCourse(courseId, config);
-    Map<String, Assignment> assignments = new HashMap<>();
-    for (AssignmentMetadata a : course.getAssignments()) {
-      System.out.format("Loading assignment %s (%s)\n", a.getName(), a.getId());
-      assignments.put(a.getId(), AssignmentLoader.loadAssignment(a.getId(), config));
-    }
     CourseWriter.writeCourse(course.getName(), assignments, targetFolder, overwriteFiles);
     */
     Assignment parsedAssignment = AssignmentLoader.loadAssignmentFromFile(new File("assignment.json"));

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Course {
+public final class RawCourse {
   private String name;
   @SerializedName("allCoursework")
   private List<CourseAssignmentMetadata> assignments;
