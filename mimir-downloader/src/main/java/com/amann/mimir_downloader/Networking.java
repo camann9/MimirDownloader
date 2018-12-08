@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.amann.mimir_downloader.data.json.Config;
+import com.amann.mimir_downloader.data.json.LoginUser;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpBackOffUnsuccessfulResponseHandler;
@@ -19,9 +21,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.client.util.Joiner;
 import com.google.gson.Gson;
-
-import json.Config;
-import json.LoginUser;
 
 public final class Networking {
   final static String USER_SESSION_URL = "https://class.mimir.io/lms/user_sessions";

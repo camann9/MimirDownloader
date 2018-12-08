@@ -4,10 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import com.amann.mimir_downloader.data.json.Config;
+import com.amann.mimir_downloader.data.json.RawAssignment;
 import com.amann.mimir_downloader.data.processed.Assignment;
-
-import json.Config;
-import json.RawAssignment;
 
 public final class AssignmentLoader {
   final static String ASSIGNMENT_URL_FORMAT = "https://class.mimir.io/lms/courses/%s";

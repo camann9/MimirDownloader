@@ -1,4 +1,4 @@
-package json;
+package com.amann.mimir_downloader.data.json;
 
 public final class AssignmentMetadata {
   private String id;

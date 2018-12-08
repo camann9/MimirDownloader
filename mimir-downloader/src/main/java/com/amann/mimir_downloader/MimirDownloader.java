@@ -11,12 +11,11 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import com.amann.mimir_downloader.data.json.AssignmentMetadata;
+import com.amann.mimir_downloader.data.json.Config;
+import com.amann.mimir_downloader.data.json.Course;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.google.gson.JsonSyntaxException;
-
-import json.AssignmentMetadata;
-import json.Config;
-import json.Course;
 
 public class MimirDownloader {
   public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target folder>";

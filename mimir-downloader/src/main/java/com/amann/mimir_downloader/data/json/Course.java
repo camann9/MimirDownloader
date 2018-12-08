@@ -1,4 +1,4 @@
-package json;
+package com.amann.mimir_downloader.data.json;
 
 import java.util.List;
 

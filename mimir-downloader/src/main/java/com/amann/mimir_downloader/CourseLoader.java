@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import json.Config;
-import json.Course;
+import com.amann.mimir_downloader.data.json.Config;
+import com.amann.mimir_downloader.data.json.Course;
 
 public final class CourseLoader {
   final static String COURSE_URL_FORMAT = "https://class.mimir.io/lms/courses/%s";
