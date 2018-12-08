@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.gson.Gson;
 
 import json.Config;
 
 public final class Util {
-  final static Gson GSON = new Gson();
+  public final static Gson GSON = new Gson();
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
 

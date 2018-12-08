@@ -11,6 +11,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import com.amann.mimir_downloader.data.processed.Assignment;
 import com.google.gson.JsonSyntaxException;
 
 import json.AssignmentMetadata;
@@ -63,7 +64,7 @@ public class MimirDownloader {
     Course c = CourseLoader.loadCourse(courseId, config);
     for (AssignmentMetadata a : c.getAssignments()) {
       System.out.format("Loading assignment %s", a.getId());
-      //AssignmentLoader.loadAssignment(a.getId(), config);
+      Assignment parsedAssignment = AssignmentLoader.loadAssignment(a.getId(), config);
     }
     System.out.println("It seems like you downloaded this course before.");
   }
@@ -80,7 +81,7 @@ public class MimirDownloader {
     }
     if (cmd.hasOption('u') && cmd.hasOption('p')) {
       // Sign user in and store credentials in config
-      if (Login.createSession(config, cmd.getOptionValue('u'),
+      if (Networking.createSession(config, cmd.getOptionValue('u'),
           cmd.getOptionValue('p'))) {
         Util.writeConfig(downloaderRoot, config);
       } else {
@@ -88,7 +89,7 @@ public class MimirDownloader {
         return null;
       }
     }
-    if (!Login.verifySession(config)) {
+    if (!Networking.verifySession(config)) {
       System.out.println("No valid Mimir session token in storage. "
           + "Must specify user name and password.");
       return null;

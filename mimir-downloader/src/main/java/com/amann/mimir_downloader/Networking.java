@@ -23,11 +23,11 @@ import com.google.gson.Gson;
 import json.Config;
 import json.LoginUser;
 
-public final class Login {
+public final class Networking {
   final static String USER_SESSION_URL = "https://class.mimir.io/lms/user_sessions";
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
-  final static HttpRequestFactory requestFactory = new NetHttpTransport()
+  public final static HttpRequestFactory REQUEST_FACTORY = new NetHttpTransport()
       .createRequestFactory();
   final static HttpBackOffUnsuccessfulResponseHandler BACKOFF = new HttpBackOffUnsuccessfulResponseHandler(
       new ExponentialBackOff.Builder().setInitialIntervalMillis(500)
@@ -75,8 +75,8 @@ public final class Login {
 
   public static String executeAuthedRequest(String url, Config config)
       throws IOException {
-    HttpRequest request = requestFactory.buildGetRequest(new GenericUrl(url))
-        .setHeaders(Login.createAuthHeaders(config))
+    HttpRequest request = REQUEST_FACTORY.buildGetRequest(new GenericUrl(url))
+        .setHeaders(Networking.createAuthHeaders(config))
         .setUnsuccessfulResponseHandler(BACKOFF);
     return request.execute().parseAsString();
   }
@@ -96,7 +96,7 @@ public final class Login {
     try {
       // Triggering login works by sending a POST request with the right data to
       // the USER_SESSION endpoint
-      HttpResponse response = requestFactory
+      HttpResponse response = REQUEST_FACTORY
           .buildPostRequest(new GenericUrl(USER_SESSION_URL), content)
           .setUnsuccessfulResponseHandler(BACKOFF)
           .execute();
