@@ -7,7 +7,7 @@ public final class Config {
   private String sessionToken;
   @SerializedName("user_session_id")
   private String sessionId;
-  
+
   public String getSessionToken() {
     return sessionToken;
   }

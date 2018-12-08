@@ -15,12 +15,12 @@ import com.google.gson.Gson;
 
 public final class CourseLoader {
   final static String COURSE_URL_FORMAT = "https://class.mimir.io/lms/courses/%s";
-  final static Pattern COURSE_URL_PATTERN =
-      Pattern.compile("^https://class.mimir.io/courses/(.*)$");
-  final static HttpRequestFactory requestFactory =
-      new NetHttpTransport().createRequestFactory();
+  final static Pattern COURSE_URL_PATTERN = Pattern
+      .compile("^https://class.mimir.io/courses/(.*)$");
+  final static HttpRequestFactory requestFactory = new NetHttpTransport()
+      .createRequestFactory();
   final static Gson GSON = new Gson();
-  
+
   public static Course loadCourse(String id, Config config) throws IOException {
     String url = String.format(COURSE_URL_FORMAT, id);
     return GSON.fromJson(Login.executeAuthedRequest(url, config), Course.class);

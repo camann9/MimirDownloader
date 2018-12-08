@@ -11,9 +11,9 @@ public final class Util {
   final static Gson gson = new Gson();
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
-  
+
   public static void createDir(File dir) {
-    if (! dir.exists()){
+    if (!dir.exists()) {
       dir.mkdir();
     }
   }
@@ -30,8 +30,9 @@ public final class Util {
       return config;
     }
   }
-  
-  public static void writeConfig(File downloaderRoot, Config config) throws IOException {
+
+  public static void writeConfig(File downloaderRoot, Config config)
+      throws IOException {
     File configFile = new File(downloaderRoot, "config.json");
     String contents = gson.toJson(config);
     Files.write(configFile.toPath(), contents.getBytes());

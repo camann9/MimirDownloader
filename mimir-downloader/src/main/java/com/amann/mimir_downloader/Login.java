@@ -25,13 +25,13 @@ public final class Login {
   final static String USER_SESSION_URL = "https://class.mimir.io/lms/user_sessions";
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
-  final static HttpRequestFactory requestFactory =
-      new NetHttpTransport().createRequestFactory();
+  final static HttpRequestFactory requestFactory = new NetHttpTransport()
+      .createRequestFactory();
   final static Gson GSON = new Gson();
 
   private static boolean updateSession(HttpResponse response, Config config) {
-    List<String> cookieHeaders =
-        (List<String>) response.getHeaders().get("Set-Cookie");
+    List<String> cookieHeaders = (List<String>) response.getHeaders()
+        .get("Set-Cookie");
     if (cookieHeaders == null) {
       return false;
     }
@@ -44,7 +44,8 @@ public final class Login {
     Optional<HttpCookie> idCookie = allCookies.stream()
         .filter(cookie -> cookie.getName().equals(SESSION_ID_COOKIE)).findAny();
     Optional<HttpCookie> tokenCookie = allCookies.stream()
-        .filter(cookie -> cookie.getName().equals(SESSION_TOKEN_COOKIE)).findAny();
+        .filter(cookie -> cookie.getName().equals(SESSION_TOKEN_COOKIE))
+        .findAny();
 
     // If the login failed the cookies will not be present so we return false.
     // Sadly we still get a 200 response...
@@ -58,38 +59,42 @@ public final class Login {
 
   public static HttpHeaders createAuthHeaders(Config config) {
     CookieManager cookieManager = new CookieManager();
-    createAndAddCookie(cookieManager, SESSION_TOKEN_COOKIE, config.getSessionToken());
+    createAndAddCookie(cookieManager, SESSION_TOKEN_COOKIE,
+        config.getSessionToken());
     createAndAddCookie(cookieManager, SESSION_ID_COOKIE, config.getSessionId());
-    String cookieString = Joiner.on(';').join(cookieManager.getCookieStore().getCookies());
+    String cookieString = Joiner.on(';')
+        .join(cookieManager.getCookieStore().getCookies());
     return new HttpHeaders().setCookie(cookieString);
   }
-  
-  public static String executeAuthedRequest(String url, Config config) throws IOException {
-    HttpRequest request = requestFactory
-        .buildGetRequest(new GenericUrl(url))
+
+  public static String executeAuthedRequest(String url, Config config)
+      throws IOException {
+    HttpRequest request = requestFactory.buildGetRequest(new GenericUrl(url))
         .setHeaders(Login.createAuthHeaders(config));
     return request.execute().parseAsString();
   }
 
-  private static void createAndAddCookie(
-      CookieManager cookieManager, String name, String value) {
+  private static void createAndAddCookie(CookieManager cookieManager,
+      String name, String value) {
     HttpCookie cookie = new HttpCookie(name, value);
     cookie.setVersion(0);
     cookieManager.getCookieStore().add(null, cookie);
   }
 
-  public static boolean createSession(Config config, String username, String password)
-      throws IOException {
+  public static boolean createSession(Config config, String username,
+      String password) throws IOException {
     LoginUser user = new LoginUser(username, password);
-    ByteArrayContent content =
-        new ByteArrayContent("application/json", GSON.toJson(user).getBytes());
+    ByteArrayContent content = new ByteArrayContent("application/json",
+        GSON.toJson(user).getBytes());
     try {
-      // Triggering login works by sending a POST request with the right data to the
+      // Triggering login works by sending a POST request with the right data to
+      // the
       // USER_SESSION endpoint
-      HttpResponse response =
-          requestFactory.buildPostRequest(new GenericUrl(USER_SESSION_URL), content).execute();
+      HttpResponse response = requestFactory
+          .buildPostRequest(new GenericUrl(USER_SESSION_URL), content)
+          .execute();
       return updateSession(response, config);
-    } catch(HttpResponseException ex) {
+    } catch (HttpResponseException ex) {
       // If we get "unauthorized" then username/password was incorrect
       if (ex.getStatusCode() == 401) {
         return false;
@@ -108,7 +113,7 @@ public final class Login {
       // If that fails we need to refresh.
       executeAuthedRequest(USER_SESSION_URL, config);
       return true;
-    } catch(HttpResponseException ex) {
+    } catch (HttpResponseException ex) {
       // If we get unauthorized we need to update
       if (ex.getStatusCode() == 401) {
         return false;
@@ -117,5 +122,5 @@ public final class Login {
       }
     }
   }
-  
+
 }
