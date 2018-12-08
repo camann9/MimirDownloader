@@ -1,6 +1,7 @@
 package com.amann.mimir_downloader.data.json;
 
-public final class AssignmentMetadata {
+// Metadata about assignment that is part of the course JSON file.
+public final class CourseAssignmentMetadata {
   private String id;
   private String name;
 

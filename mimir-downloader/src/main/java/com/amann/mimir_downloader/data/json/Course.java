@@ -7,13 +7,13 @@ import com.google.gson.annotations.SerializedName;
 public final class Course {
   private String name;
   @SerializedName("allCoursework")
-  private List<AssignmentMetadata> assignments;
+  private List<CourseAssignmentMetadata> assignments;
 
-  public List<AssignmentMetadata> getAssignments() {
+  public List<CourseAssignmentMetadata> getAssignments() {
     return assignments;
   }
 
-  public void setAssignments(List<AssignmentMetadata> assignments) {
+  public void setAssignments(List<CourseAssignmentMetadata> assignments) {
     this.assignments = assignments;
   }
 

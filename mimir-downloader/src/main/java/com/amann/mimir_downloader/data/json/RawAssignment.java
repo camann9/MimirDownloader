@@ -1,5 +1,9 @@
 package com.amann.mimir_downloader.data.json;
 
-public final class RawAssignment {
+import java.util.List;
 
+public final class RawAssignment {
+  RawAssignmentMetadata assignment;
+  List<RawQuestion> questions;
+  CompilatorMap compilatorMap;
 }

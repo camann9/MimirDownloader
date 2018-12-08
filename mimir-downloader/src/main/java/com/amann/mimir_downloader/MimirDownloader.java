@@ -11,7 +11,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.amann.mimir_downloader.data.json.AssignmentMetadata;
+import com.amann.mimir_downloader.data.json.CourseAssignmentMetadata;
 import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.json.Course;
 import com.amann.mimir_downloader.data.processed.Assignment;
@@ -25,11 +25,13 @@ public class MimirDownloader {
     Options options = new Options();
     options.addOption("u", "user", true, "mimir user name (email)");
     options.addOption("p", "password", true, "mimir password");
-    options.addOption("h", "help", true, "print help");
+    options.addOption("f", "force", false, "force overwriting files in existing directory");
+    options.addOption("h", "help", false, "print help");
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
     CommandLine cmd = parser.parse(options, args);
     List<String> otherArgs = cmd.getArgList();
+    boolean overwriteFiles = cmd.hasOption('f');
 
     if (otherArgs.size() != 2 || cmd.hasOption('h')) {
       formatter.printHelp(HELP_PREFIX, options);
@@ -47,11 +49,12 @@ public class MimirDownloader {
     String home = System.getProperty("user.home");
     File downloaderRoot = new File(home, ".mimir_downloader");
     Util.createDir(downloaderRoot);
+    /*
     Config config = getAuthConfigFromArgs(cmd, downloaderRoot);
     if (config == null) {
       formatter.printHelp(HELP_PREFIX, options);
       return;
-    }
+    }*/
 
     String courseId = CourseLoader.getCourseId(courseUrl);
     if (courseId == null) {
@@ -60,12 +63,17 @@ public class MimirDownloader {
       formatter.printHelp(HELP_PREFIX, options);
       return;
     }
-    Course c = CourseLoader.loadCourse(courseId, config);
-    for (AssignmentMetadata a : c.getAssignments()) {
-      System.out.format("Loading assignment %s", a.getId());
-      Assignment parsedAssignment = AssignmentLoader.loadAssignment(a.getId(), config);
+    /*
+    Course course = CourseLoader.loadCourse(courseId, config);
+    Map<String, Assignment> assignments = new HashMap<>();
+    for (AssignmentMetadata a : course.getAssignments()) {
+      System.out.format("Loading assignment %s (%s)\n", a.getName(), a.getId());
+      assignments.put(a.getId(), AssignmentLoader.loadAssignment(a.getId(), config));
     }
-    System.out.println("It seems like you downloaded this course before.");
+    CourseWriter.writeCourse(course.getName(), assignments, targetFolder, overwriteFiles);
+    */
+    Assignment parsedAssignment = AssignmentLoader.loadAssignmentFromFile(new File("assignment.json"));
+    AssignmentWriter.writeAssignment(parsedAssignment, overwriteFiles);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd, File downloaderRoot)
