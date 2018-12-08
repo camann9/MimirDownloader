@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import com.amann.mimir_downloader.data.Config;
 import com.google.gson.Gson;
 
+import json.Config;
+
 public final class Util {
-  final static Gson gson = new Gson();
+  final static Gson GSON = new Gson();
   final static String SESSION_TOKEN_COOKIE = "user_session_token";
   final static String SESSION_ID_COOKIE = "user_session_id";
 
@@ -23,7 +24,7 @@ public final class Util {
     Config config = new Config();
     if (configFile.exists()) {
       String contents = new String(Files.readAllBytes(configFile.toPath()));
-      return gson.fromJson(contents, Config.class);
+      return GSON.fromJson(contents, Config.class);
     } else {
       // Create empty config file
       writeConfig(downloaderRoot, config);
@@ -34,7 +35,7 @@ public final class Util {
   public static void writeConfig(File downloaderRoot, Config config)
       throws IOException {
     File configFile = new File(downloaderRoot, "config.json");
-    String contents = gson.toJson(config);
+    String contents = GSON.toJson(config);
     Files.write(configFile.toPath(), contents.getBytes());
   }
 }

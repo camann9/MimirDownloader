@@ -6,20 +6,22 @@ import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
-import com.amann.mimir_downloader.data.Config;
-import com.amann.mimir_downloader.data.LoginUser;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpBackOffUnsuccessfulResponseHandler;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.client.util.Joiner;
 import com.google.gson.Gson;
+
+import json.Config;
+import json.LoginUser;
 
 public final class Login {
   final static String USER_SESSION_URL = "https://class.mimir.io/lms/user_sessions";
@@ -27,6 +29,10 @@ public final class Login {
   final static String SESSION_ID_COOKIE = "user_session_id";
   final static HttpRequestFactory requestFactory = new NetHttpTransport()
       .createRequestFactory();
+  final static HttpBackOffUnsuccessfulResponseHandler BACKOFF = new HttpBackOffUnsuccessfulResponseHandler(
+      new ExponentialBackOff.Builder().setInitialIntervalMillis(500)
+          .setMaxElapsedTimeMillis(30000).setMultiplier(1.5)
+          .setRandomizationFactor(0.5).build());
   final static Gson GSON = new Gson();
 
   private static boolean updateSession(HttpResponse response, Config config) {
@@ -70,7 +76,8 @@ public final class Login {
   public static String executeAuthedRequest(String url, Config config)
       throws IOException {
     HttpRequest request = requestFactory.buildGetRequest(new GenericUrl(url))
-        .setHeaders(Login.createAuthHeaders(config));
+        .setHeaders(Login.createAuthHeaders(config))
+        .setUnsuccessfulResponseHandler(BACKOFF);
     return request.execute().parseAsString();
   }
 
@@ -88,10 +95,10 @@ public final class Login {
         GSON.toJson(user).getBytes());
     try {
       // Triggering login works by sending a POST request with the right data to
-      // the
-      // USER_SESSION endpoint
+      // the USER_SESSION endpoint
       HttpResponse response = requestFactory
           .buildPostRequest(new GenericUrl(USER_SESSION_URL), content)
+          .setUnsuccessfulResponseHandler(BACKOFF)
           .execute();
       return updateSession(response, config);
     } catch (HttpResponseException ex) {
@@ -122,5 +129,4 @@ public final class Login {
       }
     }
   }
-
 }

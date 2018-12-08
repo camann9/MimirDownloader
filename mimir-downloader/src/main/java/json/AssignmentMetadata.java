@@ -1,22 +1,22 @@
-package com.amann.mimir_downloader.data;
+package json;
 
 public final class AssignmentMetadata {
   private String id;
   private String name;
 
-  String getName() {
+  public String getName() {
     return name;
   }
 
-  void setName(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  String getId() {
+  public String getId() {
     return id;
   }
 
-  void setId(String id) {
+  public void setId(String id) {
     this.id = id;
   }
 }

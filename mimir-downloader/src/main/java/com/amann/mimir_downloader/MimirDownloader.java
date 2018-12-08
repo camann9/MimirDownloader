@@ -11,9 +11,11 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.amann.mimir_downloader.data.Config;
-import com.amann.mimir_downloader.data.Course;
 import com.google.gson.JsonSyntaxException;
+
+import json.AssignmentMetadata;
+import json.Config;
+import json.Course;
 
 public class MimirDownloader {
   public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target folder>";
@@ -36,11 +38,16 @@ public class MimirDownloader {
 
     String courseUrl = otherArgs.get(0);
     File targetFolder = new File(otherArgs.get(1));
+    
+    if (!targetFolder.isDirectory() && !targetFolder.mkdirs()) {
+      System.out.println("Could not create output directory");
+      return;
+    }
 
     String home = System.getProperty("user.home");
     File downloaderRoot = new File(home, ".mimir_downloader");
     Util.createDir(downloaderRoot);
-    Config config = getUserFromArgs(cmd, downloaderRoot);
+    Config config = getAuthConfigFromArgs(cmd, downloaderRoot);
     if (config == null) {
       formatter.printHelp(HELP_PREFIX, options);
       return;
@@ -54,10 +61,14 @@ public class MimirDownloader {
       return;
     }
     Course c = CourseLoader.loadCourse(courseId, config);
+    for (AssignmentMetadata a : c.getAssignments()) {
+      System.out.format("Loading assignment %s", a.getId());
+      //AssignmentLoader.loadAssignment(a.getId(), config);
+    }
     System.out.println("It seems like you downloaded this course before.");
   }
 
-  private static Config getUserFromArgs(CommandLine cmd, File downloaderRoot)
+  private static Config getAuthConfigFromArgs(CommandLine cmd, File downloaderRoot)
       throws IOException {
     Config config = Util.readConfig(downloaderRoot);
 

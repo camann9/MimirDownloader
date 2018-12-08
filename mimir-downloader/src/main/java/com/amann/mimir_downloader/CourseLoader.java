@@ -5,13 +5,14 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.amann.mimir_downloader.data.Config;
-import com.amann.mimir_downloader.data.Course;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.gson.Gson;
+
+import json.Config;
+import json.Course;
 
 public final class CourseLoader {
   final static String COURSE_URL_FORMAT = "https://class.mimir.io/lms/courses/%s";

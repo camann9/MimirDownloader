@@ -1,4 +1,4 @@
-package com.amann.mimir_downloader.data;
+package json;
 
 import com.google.gson.annotations.SerializedName;
 
