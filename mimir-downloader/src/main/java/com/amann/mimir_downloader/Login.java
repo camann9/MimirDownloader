@@ -29,53 +29,6 @@ public final class Login {
       new NetHttpTransport().createRequestFactory();
   final static Gson GSON = new Gson();
 
-  public static void getOrUpdateSession(Config config) throws IOException {
-    if (config.getSessionToken() != null && config.getSessionId() != null) {
-      
-      try {
-        // Try to execute a request to user_sessions with current credentials.
-        // If that fails we need to refresh.
-        executeAuthedRequest(USER_SESSION_URL, config);
-      } catch(HttpResponseException ex) {
-        // If we get unauthorized we need to update
-        if (ex.getStatusCode() == 401) {
-          updateSession(config);
-        } else {
-          throw ex;
-        }
-      }
-    } else {
-      updateSession(config);
-    }
-  }
-  
-  private static void updateSession(Config config) throws IOException {
-    while (true) {
-      LoginUser user = getLoginUser();
-      ByteArrayContent content =
-          new ByteArrayContent("application/json", GSON.toJson(user).getBytes());
-      try {
-        // Triggering login works by sending a POST request with the right data to the
-        // USER_SESSION endpoint
-        HttpResponse response =
-            requestFactory.buildPostRequest(new GenericUrl(USER_SESSION_URL), content).execute();
-        if (updateSession(response, config)) {
-          return;
-        }
-        else {
-          System.out.println("Incorrect user name or password");
-        }
-      } catch(HttpResponseException ex) {
-        // If we get "unauthorized" then username/password was incorrect
-        if (ex.getStatusCode() == 401) {
-          System.out.println("Incorrect user name or password");
-        } else {
-          throw ex;
-        }
-      }
-    }
-  }
-
   private static boolean updateSession(HttpResponse response, Config config) {
     List<String> cookieHeaders =
         (List<String>) response.getHeaders().get("Set-Cookie");
@@ -103,16 +56,6 @@ public final class Login {
     return true;
   }
 
-  private static LoginUser getLoginUser() {
-    Scanner s = new Scanner(System.in);
-    System.out.println("Enter your mimir account email");
-    String email = s.nextLine();
-    System.out.println("Enter your mimir account password");
-    String password = s.nextLine();
-    LoginUser user = new LoginUser(email, password);
-    return user;
-  }
-
   public static HttpHeaders createAuthHeaders(Config config) {
     CookieManager cookieManager = new CookieManager();
     createAndAddCookie(cookieManager, SESSION_TOKEN_COOKIE, config.getSessionToken());
@@ -133,6 +76,46 @@ public final class Login {
     HttpCookie cookie = new HttpCookie(name, value);
     cookie.setVersion(0);
     cookieManager.getCookieStore().add(null, cookie);
+  }
+
+  public static boolean createSession(Config config, String username, String password)
+      throws IOException {
+    LoginUser user = new LoginUser(username, password);
+    ByteArrayContent content =
+        new ByteArrayContent("application/json", GSON.toJson(user).getBytes());
+    try {
+      // Triggering login works by sending a POST request with the right data to the
+      // USER_SESSION endpoint
+      HttpResponse response =
+          requestFactory.buildPostRequest(new GenericUrl(USER_SESSION_URL), content).execute();
+      return updateSession(response, config);
+    } catch(HttpResponseException ex) {
+      // If we get "unauthorized" then username/password was incorrect
+      if (ex.getStatusCode() == 401) {
+        return false;
+      } else {
+        throw ex;
+      }
+    }
+  }
+
+  public static boolean verifySession(Config config) throws IOException {
+    if (config.getSessionId() == null || config.getSessionToken() == null) {
+      return false;
+    }
+    try {
+      // Try to execute a request to user_sessions with current credentials.
+      // If that fails we need to refresh.
+      executeAuthedRequest(USER_SESSION_URL, config);
+      return true;
+    } catch(HttpResponseException ex) {
+      // If we get unauthorized we need to update
+      if (ex.getStatusCode() == 401) {
+        return false;
+      } else {
+        throw ex;
+      }
+    }
   }
   
 }

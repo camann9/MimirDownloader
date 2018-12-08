@@ -25,17 +25,13 @@ public final class CourseLoader {
     String url = String.format(COURSE_URL_FORMAT, id);
     return GSON.fromJson(Login.executeAuthedRequest(url, config), Course.class);
   }
-  
-  public static String readCourseUrl() {
-    Scanner scanner = new Scanner(System.in);
-    while (true) {
-      System.out.println("Input course URL (go to course in browser and copy URL)");
-      Matcher m = COURSE_URL_PATTERN.matcher(scanner.nextLine());
-      if (m.matches()) {
-        return m.group(1);
-      } else {
-        System.out.println("Incorrect URL. Course URLs start with 'https://class.mimir.io/lms/courses/'.");
-      }
+
+  public static String getCourseId(String courseUrl) {
+    Matcher m = COURSE_URL_PATTERN.matcher(courseUrl);
+    if (m.matches()) {
+      return m.group(1);
+    } else {
+      return null;
     }
   }
 }
