@@ -1,15 +1,12 @@
 package com.amann.mimir_downloader;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.json.CourseAssignmentMetadata;
 import com.amann.mimir_downloader.data.json.RawCourse;
-import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
 
 public final class CourseLoader {
@@ -18,15 +15,16 @@ public final class CourseLoader {
       .compile("^https://class.mimir.io/courses/(.*)$");
 
 
-  public static Course loadCourse(String id, Config config) throws IOException {
+  public static Course loadCourse(String id, Config config) throws IOException, ParseException {
     String url = String.format(COURSE_URL_FORMAT, id);
     RawCourse raw = Util.GSON.fromJson(Networking.executeAuthedRequest(url, config), RawCourse.class);
-    Map<String, Assignment> rawAssignments = new HashMap<>();
+    Course course = new Course(raw.getName());
+    
     for (CourseAssignmentMetadata a : raw.getAssignments()) {
       System.out.format("Loading assignment %s (%s)\n", a.getName(), a.getId());
-      rawAssignments.put(a.getId(), AssignmentLoader.loadAssignment(a.getId(), config));
+      course.addAssignment(AssignmentLoader.loadAssignment(a.getId(), config));
     }
-    return new Course();
+    return course;
   }
 
   public static String getCourseId(String courseUrl) {

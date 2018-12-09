@@ -1,5 +1,9 @@
 package com.amann.mimir_downloader.data.json;
 
 public final class FileMapValue {
-  String content;
+  private String content;
+
+  public String getContent() {
+    return content;
+  }
 }

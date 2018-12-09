@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
+  private String name;
   private List<Assignment> assignments = new ArrayList<>();
+  
+  public Course(String name) {
+    this.name = name;
+  }
 
-  List<Assignment> getAssignments() {
+  public List<Assignment> getAssignments() {
     return assignments;
   }
 
-  void addAssignments(Assignment assignment) {
+  public void addAssignment(Assignment assignment) {
     assignments.add(assignment);
   }
 }

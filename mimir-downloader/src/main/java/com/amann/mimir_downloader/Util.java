@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import com.amann.mimir_downloader.data.json.Config;
-import com.google.api.client.http.HttpRequestFactory;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.gson.Gson;
 
 public final class Util {

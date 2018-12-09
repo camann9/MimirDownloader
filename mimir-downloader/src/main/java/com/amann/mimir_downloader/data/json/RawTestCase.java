@@ -12,4 +12,23 @@ public class RawTestCase {
   String perfectOutput;
   // Expected output for I/O test cases
   String expectedOutput;
+  
+  public String getName() {
+    return name;
+  }
+  public String getDescription() {
+    return description;
+  }
+  public String getTestType() {
+    return testType;
+  }
+  public String getInput() {
+    return input;
+  }
+  public String getPerfectOutput() {
+    return perfectOutput;
+  }
+  public String getExpectedOutput() {
+    return expectedOutput;
+  }
 }

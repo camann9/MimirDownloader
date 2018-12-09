@@ -6,5 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class CompilatorMap {
   @SerializedName("__pairs__")
-  List<CompilatorEntry> entries; 
+  private
+  List<CompilatorEntry> entries;
+
+  public List<CompilatorEntry> getEntries() {
+    return entries;
+  }
 }

@@ -3,7 +3,7 @@
     "id":"sdfsdg-ghfh-546-6578-87897789ty",
     "courseId":"sdfsdf-fghfgh-fghfgh-dfgdfg-2reret445",
     "name":"Assignment name",
-    "description":"",
+    "description":"<p>Assignment description",
     "status":"active",
     "openDate":"2018-12-05T04:59:00.000Z",
     "dueDate":"2018-12-11T04:59:59.000Z",
@@ -13,8 +13,7 @@
       "g45grgrt-rtyr-jhkh-hjkh-hljkljkljkll",
       "j67u67j7-ghjg-hjkk-g675-vngyj7678547",
       "ghjghjjh-7687-4564-5464-fh567456trg4",
-      "fgh567y6-5676-345t-fbrh-5464gdfg4554",
-      "fhfghhgf-4564-5345-dfgt-456456gt5y56"
+      "fgh567y6-5676-345t-fbrh-5464gdfg4554"
     ],
     "isRedesign":true
   },

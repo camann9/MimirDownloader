@@ -6,5 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public final class FileMap {
   @SerializedName("__pairs__")
-  List<FileMapEntry> entries; 
+  List<FileMapEntry> entries;
+
+  public List<FileMapEntry> getEntries() {
+    return entries;
+  } 
 }

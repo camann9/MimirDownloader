@@ -7,4 +7,16 @@ public class RawAssignmentMetadata {
   // IDs of questions in order
   List<String> questionOrder;
   String name;
+  // HTML
+  String description;
+
+  public List<String> getQuestionOrder() {
+    return questionOrder;
+  }
+  public String getName() {
+    return name;
+  }
+  public String getDescription() {
+    return description;
+  }
 }
