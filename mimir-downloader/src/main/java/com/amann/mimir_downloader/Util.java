@@ -6,16 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
+import org.jsoup.nodes.Document;
 
 import com.amann.mimir_downloader.data.json.Config;
 import com.google.gson.Gson;
@@ -52,13 +43,9 @@ public final class Util {
   }
 
   public static final void printToFile(Document xml, File outputFile)
-      throws TransformerFactoryConfigurationError, IOException,
-      TransformerException {
-    Transformer tf = TransformerFactory.newInstance().newTransformer();
-    tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-    tf.setOutputProperty(OutputKeys.INDENT, "yes");
+      throws IOException {
     try (Writer out = new FileWriter(outputFile)) {
-      tf.transform(new DOMSource(xml), new StreamResult(out));
+      out.write(xml.outerHtml());
     }
   }
 
