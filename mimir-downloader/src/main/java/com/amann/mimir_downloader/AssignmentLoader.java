@@ -20,10 +20,13 @@ import com.amann.mimir_downloader.data.json.RawTestCase;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.CheckboxQuestion;
 import com.amann.mimir_downloader.data.processed.CodeFile;
+import com.amann.mimir_downloader.data.processed.CodeQualityTestCase;
 import com.amann.mimir_downloader.data.processed.CodeReviewQuestion;
 import com.amann.mimir_downloader.data.processed.CodeTestCase;
 import com.amann.mimir_downloader.data.processed.CodingQuestion;
+import com.amann.mimir_downloader.data.processed.CustomTestCase;
 import com.amann.mimir_downloader.data.processed.FileUploadQuestion;
+import com.amann.mimir_downloader.data.processed.IoTestCase;
 import com.amann.mimir_downloader.data.processed.LongAnswerQuestion;
 import com.amann.mimir_downloader.data.processed.MultipleChoiceQuestion;
 import com.amann.mimir_downloader.data.processed.Question;
@@ -141,17 +144,29 @@ public final class AssignmentLoader {
       String questionName) throws ParseException {
     ArrayList<CodeTestCase> testCases = new ArrayList<>();
     for (RawTestCase test : code.getTestCases()) {
-      String testCaseType = test.getTestType();
-      switch (testCaseType) {
-      case "unit":
-        testCases.add(new UnitTestCase(test.getName(), test.getDescription(),
-            test.getInput()));
-      default:
-        throw new ParseException(
-            String.format("Unknown test case type %s in question '%s'",
-                testCaseType, questionName));
-      }
+      testCases.add(processTestCase(test, questionName));
     }
     return testCases;
+  }
+
+  private static CodeTestCase processTestCase(RawTestCase test,
+      String questionName) throws ParseException {
+    String testCaseType = test.getTestType();
+    switch (testCaseType) {
+    case "unit":
+      return new UnitTestCase(test.getName(), test.getDescription(),
+          test.getInput());
+    case "io":
+      return new IoTestCase(test.getName(), test.getDescription(),
+          test.getInput(), test.getExpectedOutput());
+    case "lint":
+      return new CodeQualityTestCase(test.getName(), test.getDescription());
+    case "custom":
+      return new CustomTestCase(test.getName(), test.getDescription(), test.getInput());
+    default:
+      throw new ParseException(
+          String.format("Unknown test case type %s in question '%s'",
+              testCaseType, questionName));
+    }
   }
 }

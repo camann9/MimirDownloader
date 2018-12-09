@@ -8,4 +8,7 @@ public final class UnitTestCase extends CodeTestCase {
     this.testCode = testCode;
   }
 
+  public String getTestCode() {
+    return testCode;
+  }
 }
