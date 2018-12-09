@@ -1,19 +1,21 @@
 package com.amann.mimir_downloader.data.processed;
 
 import java.util.List;
+import java.util.Set;
 
 public final class CheckboxQuestion extends Question {
-  private List<Integer> correctAnswerIdexes;
+  private Set<Integer> correctAnswerIndexes;
   private List<String> answers;
 
-  public CheckboxQuestion(String title, String description, List<Integer> correctAnswerIdexes, List<String> answers) {
-    super(title, description);
-    this.correctAnswerIdexes = correctAnswerIdexes;
+  public CheckboxQuestion(String id, String title, String description,
+      Set<Integer> correctAnswerIndexes, List<String> answers) {
+    super(id, title, description);
+    this.correctAnswerIndexes = correctAnswerIndexes;
     this.answers = answers;
   }
 
-  public List<Integer> getCorrectAnswerIdexes() {
-    return correctAnswerIdexes;
+  public Set<Integer> getCorrectAnswerIdexes() {
+    return correctAnswerIndexes;
   }
 
   public List<String> getAnswers() {

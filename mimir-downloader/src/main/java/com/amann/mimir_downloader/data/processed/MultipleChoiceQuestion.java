@@ -6,8 +6,9 @@ public final class MultipleChoiceQuestion extends Question {
   private int correctChoiceIndex;
   private List<String> answers;
 
-  public MultipleChoiceQuestion(String title, String description, int correctChoiceIndex, List<String> answers) {
-    super(title, description);
+  public MultipleChoiceQuestion(String id, String title, String description,
+      int correctChoiceIndex, List<String> answers) {
+    super(id, title, description);
     this.correctChoiceIndex = correctChoiceIndex;
     this.answers = answers;
   }

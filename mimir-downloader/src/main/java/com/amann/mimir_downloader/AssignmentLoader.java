@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -92,30 +93,32 @@ public final class AssignmentLoader {
     String questionType = rawQuestion.getQuestionType();
     switch (questionType) {
     case "long_answer":
-      return new LongAnswerQuestion(title, description);
+      return new LongAnswerQuestion(id, title, description);
     case "short_answer":
-      return new ShortAnswerQuestion(title, description);
+      return new ShortAnswerQuestion(id, title, description);
     case "file_upload":
-      return new FileUploadQuestion(title, description);
+      return new FileUploadQuestion(id, title, description);
     case "multiple_choice":
-      return new MultipleChoiceQuestion(title, description,
+      return new MultipleChoiceQuestion(id, title, description,
           rawQuestion.getCorrectChoiceIndex(), rawQuestion.getChoices());
     case "multi_select":
-      return new CheckboxQuestion(title, description,
-          rawQuestion.getCorrectMultiIndexes(), rawQuestion.getChoices());
+      return new CheckboxQuestion(id, title, description,
+          new HashSet<Integer>(rawQuestion.getCorrectMultiIndexes()),
+          rawQuestion.getChoices());
     case "code_area":
       if (code == null) {
         throw new ParseException(
             String.format("Missing code for question '%s'", title));
       }
-      return new CodingQuestion(title, description, getCorrectCode(code),
+      return new CodingQuestion(id, title, description, getCorrectCode(code),
           getStarterCode(code), getTestCases(code, title));
     case "code_review":
       if (code == null) {
         throw new ParseException(
             String.format("Missing code for question '%s'", title));
       }
-      return new CodeReviewQuestion(title, description, getStarterCode(code));
+      return new CodeReviewQuestion(id, title, description,
+          getStarterCode(code));
     default:
       throw new ParseException(String.format(
           "Unknown question type %s in question '%s'", questionType, title));
@@ -162,7 +165,8 @@ public final class AssignmentLoader {
     case "lint":
       return new CodeQualityTestCase(test.getName(), test.getDescription());
     case "custom":
-      return new CustomTestCase(test.getName(), test.getDescription(), test.getInput());
+      return new CustomTestCase(test.getName(), test.getDescription(),
+          test.getInput());
     default:
       throw new ParseException(
           String.format("Unknown test case type %s in question '%s'",

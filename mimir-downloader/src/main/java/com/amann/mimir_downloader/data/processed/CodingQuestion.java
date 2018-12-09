@@ -7,10 +7,10 @@ public final class CodingQuestion extends Question {
   List<CodeFile> starterCode;
   List<CodeTestCase> testCases;
 
-  public CodingQuestion(String title, String description,
+  public CodingQuestion(String id, String title, String description,
       List<CodeFile> correctCode, List<CodeFile> starterCode,
       List<CodeTestCase> testCases) {
-    super(title, description);
+    super(id, title, description);
     this.correctCode = correctCode;
     this.starterCode = starterCode;
     this.testCases = testCases;
