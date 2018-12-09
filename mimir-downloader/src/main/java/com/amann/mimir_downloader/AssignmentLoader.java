@@ -120,11 +120,13 @@ public final class AssignmentLoader {
   }
 
   private static List<CodeFile> getStarterCode(CompilatorValue code) {
-    return processFiles(code.getSkeletonWorkingState().getFileMap().getEntries());
+    return processFiles(
+        code.getSkeletonWorkingState().getFileMap().getEntries());
   }
 
   private static List<CodeFile> getCorrectCode(CompilatorValue code) {
-    return processFiles(code.getPerfectWorkingState().getFileMap().getEntries());
+    return processFiles(
+        code.getPerfectWorkingState().getFileMap().getEntries());
   }
 
   private static List<CodeFile> processFiles(List<FileMapEntry> entries) {
@@ -135,17 +137,19 @@ public final class AssignmentLoader {
     return files;
   }
 
-  private static List<CodeTestCase> getTestCases(CompilatorValue code, String questionName) {
+  private static List<CodeTestCase> getTestCases(CompilatorValue code,
+      String questionName) throws ParseException {
     ArrayList<CodeTestCase> testCases = new ArrayList<>();
     for (RawTestCase test : code.getTestCases()) {
       String testCaseType = test.getTestType();
-      switch(testCaseType) {
+      switch (testCaseType) {
       case "unit":
-        testCases.add(new UnitTestCase(test.getName(), test.getDescription(), test.getInput()));
-      }
+        testCases.add(new UnitTestCase(test.getName(), test.getDescription(),
+            test.getInput()));
       default:
-        throw new ParseException(String.format(
-            "Unknown test case type %s in question '%s'", testCaseType, title));
+        throw new ParseException(
+            String.format("Unknown test case type %s in question '%s'",
+                testCaseType, questionName));
       }
     }
     return testCases;
