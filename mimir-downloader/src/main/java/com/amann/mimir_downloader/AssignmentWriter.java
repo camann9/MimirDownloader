@@ -11,13 +11,18 @@ import org.jsoup.nodes.Node;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.CheckboxQuestion;
 import com.amann.mimir_downloader.data.processed.CodeFile;
+import com.amann.mimir_downloader.data.processed.CodeQualityTestCase;
 import com.amann.mimir_downloader.data.processed.CodeReviewQuestion;
+import com.amann.mimir_downloader.data.processed.CodeTestCase;
 import com.amann.mimir_downloader.data.processed.CodingQuestion;
+import com.amann.mimir_downloader.data.processed.CustomTestCase;
 import com.amann.mimir_downloader.data.processed.FileUploadQuestion;
+import com.amann.mimir_downloader.data.processed.IoTestCase;
 import com.amann.mimir_downloader.data.processed.LongAnswerQuestion;
 import com.amann.mimir_downloader.data.processed.MultipleChoiceQuestion;
 import com.amann.mimir_downloader.data.processed.Question;
 import com.amann.mimir_downloader.data.processed.ShortAnswerQuestion;
+import com.amann.mimir_downloader.data.processed.UnitTestCase;
 
 public final class AssignmentWriter {
   public static void writeAssignment(Assignment assignment, File folder,
@@ -59,8 +64,8 @@ public final class AssignmentWriter {
       container.appendChild(new Element("div").addClass("shortAnswerField"));
     } else if (question instanceof LongAnswerQuestion) {
       container.appendChild(new Element("div").addClass("longAnswerField"));
-    }else if (question instanceof FileUploadQuestion) {
-      container.appendChild(new Element("div").addClass("fileAnswerField"));
+    } else if (question instanceof FileUploadQuestion) {
+      container.appendChild(new Element("div").addClass("fileUploadField"));
     } else if (question instanceof CheckboxQuestion) {
       container
           .appendChild(generateCheckboxQuestion((CheckboxQuestion) question));
@@ -125,7 +130,56 @@ public final class AssignmentWriter {
     reviewDiv.appendChild(generateFileList(question.getStarterCode()));
     reviewDiv.appendElement("h3").text("Correct code");
     reviewDiv.appendChild(generateFileList(question.getCorrectCode()));
+    reviewDiv.appendElement("h3").text("Test cases");
+    reviewDiv.appendChild(generateTestCases(question.getTestCases()));
     return reviewDiv;
+  }
+
+  private static Element generateTestCases(List<CodeTestCase> testCases) {
+    Element testCaseDiv = new Element("div");
+    for (CodeTestCase testCase : testCases) {
+      testCaseDiv.appendElement("h4").text(testCase.getName());
+      testCaseDiv.appendChild(new Element("div").html(testCase.getDescription())
+          .addClass("testCaseDescription"));
+
+      if (testCase instanceof CodeQualityTestCase) {
+        // Nothing to do, don't print anything
+      } else if (testCase instanceof IoTestCase) {
+        testCaseDiv.appendChild(generateIoTestCase((IoTestCase) testCase));
+      } else if (testCase instanceof UnitTestCase) {
+        testCaseDiv.appendChild(generateUnitTestCase((UnitTestCase) testCase));
+      } else if (testCase instanceof CustomTestCase) {
+        testCaseDiv
+            .appendChild(generateCustomTestCase((CustomTestCase) testCase));
+      }
+    }
+    return testCaseDiv;
+  }
+
+  private static Element generateIoTestCase(IoTestCase testCase) {
+    Element div = new Element("div");
+    div.appendElement("h5").text("Input");
+    div.appendElement("div").text(testCase.getInput()).addClass("ioInput");
+    div.appendElement("h5").text("Expected output");
+    div.appendElement("div").text(testCase.getExpectedOutput())
+        .addClass("ioOutput");
+    return div;
+  }
+
+  private static Element generateUnitTestCase(UnitTestCase testCase) {
+    Element div = new Element("div");
+    div.appendElement("h5").text("Test code");
+    div.appendElement("div").text(testCase.getTestCode())
+        .addClass("unitTestCode");
+    return div;
+  }
+
+  private static Element generateCustomTestCase(CustomTestCase testCase) {
+    Element div = new Element("div");
+    div.appendElement("h5").text("Test bash script");
+    div.appendElement("div").text(testCase.getTestBashScript())
+        .addClass("bashScript");
+    return div;
   }
 
   private static Element generateFileList(List<CodeFile> fileList) {
@@ -134,7 +188,7 @@ public final class AssignmentWriter {
       Element fileDiv = new Element("div");
       fileDiv.appendElement("h4").text(file.getFileName());
       fileDiv.appendElement("div").text(file.getContent())
-          .addClass("codeField");
+          .addClass("codeFileField");
       filesDiv.appendChild(fileDiv);
     }
     return filesDiv;
