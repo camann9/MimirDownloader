@@ -12,13 +12,11 @@ import org.apache.commons.cli.Options;
 
 import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.processed.Assignment;
-import com.google.gson.JsonSyntaxException;
 
 public class MimirDownloader {
   public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target folder>";
 
-  public static void main(String[] args) throws JsonSyntaxException,
-      IOException, org.apache.commons.cli.ParseException, ParseException {
+  public static void main(String[] args) throws Exception {
     Options options = new Options();
     options.addOption("u", "user", true, "mimir user name (email)");
     options.addOption("p", "password", true, "mimir password");
@@ -66,7 +64,8 @@ public class MimirDownloader {
      */
     Assignment parsedAssignment = AssignmentLoader
         .loadAssignmentFromFile(new File("realAssignment.json"));
-    AssignmentWriter.writeAssignment(parsedAssignment, overwriteFiles);
+    AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
+        overwriteFiles);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd,
