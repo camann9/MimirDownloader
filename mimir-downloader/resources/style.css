@@ -1,0 +1,85 @@
+pre {
+  border-width: thin;
+  border-style: solid;
+  border-color: lightgray;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+h1 {
+  text-transform: uppercase;
+  color: dodgerblue;
+  font-size: x-large;
+}
+
+h2 {
+  color: royalblue;
+  font-size: larger;
+}
+
+h3 {
+  color: cornflowerblue;
+  font-size: large;
+}
+
+h4 {
+  color: steelblue;
+  font-size: medium;
+}
+
+h5 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.testCases.hidden h4 {
+  font-size: medium;
+  font-weight:normal;
+  font-family:initial;
+  color:black;
+  line-height: normal;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 0px;
+}
+
+.testCases.hidden h4::before { 
+    content: "- ";
+}
+
+.testCases.hidden div {
+  display:none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: blue;
+}
+a:hover {
+  color: royalblue;
+}
+
+.fileList {
+  padding-left: 10px
+}
+
+.testCases {
+  padding-left: 10px
+}
+
+.question div {
+  padding-left: 10px;
+}
+
+div.questionDescription {
+  padding-left: 20px;
+}
+
+.hideLink {
+  padding-left: 5px;
+  color: steelblue;
+  font-size: small;
+}

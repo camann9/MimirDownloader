@@ -8,7 +8,6 @@ import org.jsoup.nodes.Element;
 
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
-import com.amann.mimir_downloader.data.processed.Question;
 
 public final class CourseWriter {
   public static void writeCourse(Course course, File folder,
@@ -32,10 +31,7 @@ public final class CourseWriter {
 
   private static void generateHtml(Course course, Document doc) {
     doc.title(course.getName());
-    Element styleLink = doc.head().appendElement("link");
-    styleLink.attr("rel", "stylesheet");
-    styleLink.attr("type", "text/css");
-    styleLink.attr("href", "style.css");
+    Util.addHeaderElements(doc);
     generateBody(course, doc.body());
   }
 

@@ -61,17 +61,17 @@ public class MimirDownloader {
       return;
     }
 
-//    Course course = CourseLoader.loadCourse(courseId, config);
-//    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
-    
-    // Course course = CourseLoader.loadCourseFromFile(new
-    // File("realCourse.json"));
-    // CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+    Course course = CourseLoader.loadCourse(courseId, config);
+    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
 
-     Assignment parsedAssignment = AssignmentLoader
-         .loadAssignmentFromFile(new File("realAssignment2.json"));
-     AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
-         overwriteFiles);
+//    Course course = CourseLoader
+//        .loadCourseFromFile(new File("realCourse.json"));
+//    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+
+//     Assignment parsedAssignment = AssignmentLoader
+//         .loadAssignmentFromFile(new File("realAssignment2.json"));
+//     AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
+//         overwriteFiles);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd,

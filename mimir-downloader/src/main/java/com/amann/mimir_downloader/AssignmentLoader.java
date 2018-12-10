@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -149,6 +150,7 @@ public final class AssignmentLoader {
     for (RawTestCase test : code.getTestCases()) {
       testCases.add(processTestCase(test, questionName));
     }
+    testCases.sort(new TestCaseNameComparator());
     return testCases;
   }
 
@@ -171,6 +173,14 @@ public final class AssignmentLoader {
       throw new ParseException(
           String.format("Unknown test case type %s in question '%s'",
               testCaseType, questionName));
+    }
+  }
+
+  private static final class TestCaseNameComparator
+      implements Comparator<CodeTestCase> {
+    @Override
+    public int compare(CodeTestCase o1, CodeTestCase o2) {
+      return o1.getName().compareTo(o2.getName());
     }
   }
 }

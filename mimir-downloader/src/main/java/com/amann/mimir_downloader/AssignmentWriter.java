@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.CheckboxQuestion;
@@ -42,10 +41,7 @@ public final class AssignmentWriter {
 
   private static void generateHtml(Assignment assignment, Document doc) {
     doc.title(assignment.getName());
-    Element styleLink = doc.head().appendElement("link");
-    styleLink.attr("rel", "stylesheet");
-    styleLink.attr("type", "text/css");
-    styleLink.attr("href", "style.css");
+    Util.addHeaderElements(doc);
     generateBody(assignment, doc.body());
   }
 
@@ -61,7 +57,7 @@ public final class AssignmentWriter {
   }
 
   private static Element generateQuestion(Question question) {
-    Element container = new Element("div");
+    Element container = new Element("div").addClass("question");
     container.appendChild(new Element("h2").text(question.getTitle()));
     container.appendChild(new Element("div").html(question.getDescription())
         .addClass("questionDescription"));
@@ -130,33 +126,48 @@ public final class AssignmentWriter {
   }
 
   private static Element generateCodingQuestion(CodingQuestion question) {
-    Element reviewDiv = new Element("div");
+    Element reviewDiv = new Element("div").addClass("codingQuestion");
     reviewDiv.appendElement("h3").text("Starter code");
     reviewDiv.appendChild(generateFileList(question.getStarterCode()));
     reviewDiv.appendElement("h3").text("Correct code");
     reviewDiv.appendChild(generateFileList(question.getCorrectCode()));
-    reviewDiv.appendElement("h3").text("Test cases");
+    Element testCaseHeader = reviewDiv.appendElement("h3").text("Test cases");
+    testCaseHeader.appendElement("a").text("[+]").addClass("hideLink")
+        .attr("title", "hide/unhide test cases");
     reviewDiv.appendChild(generateTestCases(question.getTestCases()));
     return reviewDiv;
   }
 
   private static Element generateTestCases(List<CodeTestCase> testCases) {
-    Element testCaseDiv = new Element("div");
+    // Test cases are hidden by default
+    Element testCaseDiv = new Element("div").addClass("testCases")
+        .addClass("hidden");
     for (CodeTestCase testCase : testCases) {
-      testCaseDiv.appendElement("h4").text(testCase.getName());
+      if (testCase instanceof CodeQualityTestCase) {
+        // Ignoring these for now
+        continue;
+      }
+
+      String type;
+      Element testCaseElement;
+      if (testCase instanceof IoTestCase) {
+        type = "I/O test case";
+        testCaseElement = generateIoTestCase((IoTestCase) testCase);
+      } else if (testCase instanceof UnitTestCase) {
+        type = "Unit test case";
+        testCaseElement = generateUnitTestCase((UnitTestCase) testCase);
+      } else if (testCase instanceof CustomTestCase) {
+        type = "Custom test case";
+        testCaseElement = generateCustomTestCase((CustomTestCase) testCase);
+      } else {
+        throw new IllegalArgumentException("Unknown type of test case: "
+            + testCase.getClass().getSimpleName());
+      }
+
+      testCaseDiv.appendElement("h4").text(type + ": " + testCase.getName());
       testCaseDiv.appendChild(new Element("div").html(testCase.getDescription())
           .addClass("testCaseDescription"));
-
-      if (testCase instanceof CodeQualityTestCase) {
-        // Nothing to do, don't print anything
-      } else if (testCase instanceof IoTestCase) {
-        testCaseDiv.appendChild(generateIoTestCase((IoTestCase) testCase));
-      } else if (testCase instanceof UnitTestCase) {
-        testCaseDiv.appendChild(generateUnitTestCase((UnitTestCase) testCase));
-      } else if (testCase instanceof CustomTestCase) {
-        testCaseDiv
-            .appendChild(generateCustomTestCase((CustomTestCase) testCase));
-      }
+      testCaseDiv.appendChild(testCaseElement);
     }
     return testCaseDiv;
   }
@@ -164,7 +175,8 @@ public final class AssignmentWriter {
   private static Element generateIoTestCase(IoTestCase testCase) {
     Element div = new Element("div");
     div.appendElement("h5").text("Input");
-    div.appendElement("code").text(testCase.getInput()).addClass("ioInput");
+    div.appendElement("pre").appendElement("code").text(testCase.getInput())
+        .addClass("ioInput");
     div.appendElement("h5").text("Expected output");
     div.appendElement("pre").appendElement("code")
         .text(testCase.getExpectedOutput()).addClass("ioOutput");
@@ -173,7 +185,6 @@ public final class AssignmentWriter {
 
   private static Element generateUnitTestCase(UnitTestCase testCase) {
     Element div = new Element("div");
-    div.appendElement("h5").text("Test code");
     div.appendElement("pre").appendElement("code").text(testCase.getTestCode())
         .addClass("unitTestCode");
     return div;
@@ -188,13 +199,11 @@ public final class AssignmentWriter {
   }
 
   private static Element generateFileList(List<CodeFile> fileList) {
-    Element filesDiv = new Element("div");
+    Element filesDiv = new Element("div").addClass("fileList");
     for (CodeFile file : fileList) {
-      Element fileDiv = new Element("div");
-      fileDiv.appendElement("h4").text(file.getFileName());
-      fileDiv.appendElement("pre").appendElement("code").text(file.getContent())
-          .addClass("codeFileField");
-      filesDiv.appendChild(fileDiv);
+      filesDiv.appendElement("h4").text(file.getFileName());
+      filesDiv.appendElement("pre").appendElement("code")
+          .text(file.getContent()).addClass("codeFileField");
     }
     return filesDiv;
   }
