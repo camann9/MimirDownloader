@@ -107,3 +107,20 @@ div.questionDescription {
 .examMode input {
   display:none;
 }
+
+.optionList li {
+  list-style: none;
+}
+
+.optionList li.incorrect:before {
+  /* Crossed out */
+  content:"\2717\0020";
+}
+.optionList li.correct:before {
+  /* Check mark */
+	content:"\2713\0020";
+}
+.examMode .optionList li:before {
+	/* Ballot box */
+  content:"\2610\0020";
+}

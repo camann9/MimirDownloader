@@ -88,35 +88,38 @@ public final class AssignmentWriter {
   }
 
   private static Element generateCheckboxQuestion(CheckboxQuestion question) {
-    Element checkboxesDiv = new Element("div");
+    Element checkboxesList = new Element("ul");
+    checkboxesList.addClass("optionList");
     for (int i = 0; i < question.getAnswers().size(); i++) {
       String answer = question.getAnswers().get(i);
       boolean correct = question.getCorrectAnswerIdexes().contains(i);
-      Element box = new Element("input").attr("type", "checkbox").text(answer);
+      Element box = new Element("li").text(answer);
       if (correct) {
-        box.attr("checked", true);
+        box.addClass("correct");
+      } else {
+        box.addClass("incorrect");
       }
-      checkboxesDiv.appendChild(box);
-      checkboxesDiv.appendElement("br");
+      checkboxesList.appendChild(box);
     }
-    return checkboxesDiv;
+    return checkboxesList;
   }
 
   private static Element generateMultipleChoiceQuestion(
       MultipleChoiceQuestion question) {
-    Element choicesDiv = new Element("div");
+    Element choicesList = new Element("ul");
+    choicesList.addClass("optionList");
     for (int i = 0; i < question.getAnswers().size(); i++) {
       String answer = question.getAnswers().get(i);
       boolean correct = (question.getCorrectChoiceIndex() == i);
-      Element box = new Element("input").attr("type", "radio")
-          .attr("name", question.getId()).text(answer);
+      Element box = new Element("li").text(answer);
       if (correct) {
-        box.attr("checked", true);
+        box.addClass("correct");
+      } else {
+        box.addClass("incorrect");
       }
-      choicesDiv.appendChild(box);
-      choicesDiv.appendElement("br");
+      choicesList.appendChild(box);
     }
-    return choicesDiv;
+    return choicesList;
   }
 
   private static Element generateCodeReviewQuestion(
