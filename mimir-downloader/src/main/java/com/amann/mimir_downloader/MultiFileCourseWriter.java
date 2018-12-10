@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
 
-public final class CourseWriter {
+public final class MultiFileCourseWriter {
   public static void writeCourse(Course course, File folder,
       boolean overwrite) throws Exception {
     // First write index of assignments\

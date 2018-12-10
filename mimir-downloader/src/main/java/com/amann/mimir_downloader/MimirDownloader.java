@@ -91,7 +91,7 @@ public class MimirDownloader {
       return;
     }
     Util.copyResources(targetFolder, overwriteFiles);
-    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+    MultiFileCourseWriter.writeCourse(course, targetFolder, overwriteFiles);
   }
   
   private static void saveCourseSingleFile(Course course, String target,
