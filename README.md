@@ -2,12 +2,16 @@
 
 Downloads Mimir assignments for a course and converts them to HTML.
 
-## Build
+## Download
 
-    mvn package
+See [current release](https://github.com/camann9/MimirDownloader/releases/download/1.0/MimirDownloader-jar-with-dependencies.jar).
 
 ## Run
 
     java -jar target/MimirDownloader-jar-with-dependencies.jar [OPTIONS] <course URL copied from browser> <target folder>
 
 Use -h to get list of options.
+
+## Build
+
+    mvn package
