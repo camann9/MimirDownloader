@@ -1,17 +1,19 @@
 package com.amann.mimir_downloader;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import com.amann.mimir_downloader.data.json.Config;
+import com.google.api.client.util.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -80,14 +82,19 @@ public final class Util {
   
   private static void copyResource(String fileName, File outputDir, boolean overwriteFiles)
       throws IOException {
-    ClassLoader classLoader = Util.class.getClassLoader();
     File target = new File(outputDir, fileName);
     if (target.exists() && !overwriteFiles) {
       throw new IOException(String.format(
           "Output file '%s' already exists and overwriting is disabled",
           target.toString()));
     }
-    File inputFile = new File(classLoader.getResource(fileName).getFile());
-    Files.copy(inputFile.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    
+    // We're going the complicated route since this also works with resources in JAR files
+    ClassLoader classLoader = Util.class.getClassLoader();
+    try (InputStream input = classLoader.getResourceAsStream(fileName)) {
+      try (FileOutputStream output = new FileOutputStream(target)) {
+        ByteStreams.copy(input, output);
+      }
+    }
   }
 }
