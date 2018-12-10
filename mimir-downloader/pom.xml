@@ -76,5 +76,6 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<finalName>MimirDownloader</finalName>
 	</build>
 </project>
