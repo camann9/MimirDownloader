@@ -11,7 +11,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 import com.amann.mimir_downloader.data.json.Config;
-import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
 
 public class MimirDownloader {
@@ -46,7 +45,6 @@ public class MimirDownloader {
     String home = System.getProperty("user.home");
     File downloaderRoot = new File(home, ".mimir_downloader");
     Util.createDir(downloaderRoot);
-
     Config config = getAuthConfigFromArgs(cmd, downloaderRoot);
     if (config == null) {
       formatter.printHelp(HELP_PREFIX, options);
@@ -61,6 +59,7 @@ public class MimirDownloader {
       return;
     }
 
+    Util.copyResources(targetFolder, overwriteFiles);
     Course course = CourseLoader.loadCourse(courseId, config);
     CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
 

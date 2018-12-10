@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 
 import org.jsoup.nodes.Document;
@@ -56,7 +57,7 @@ public final class Util {
   public static String assignmentFileName(String name) {
     return name.replaceAll("[^a-zA-Z _0-9]", "").replaceAll(" ", "_") + ".html";
   }
-  
+
   public static void addHeaderElements(Document doc) {
     Element styleLink = doc.head().appendElement("link");
     styleLink.attr("rel", "stylesheet");
@@ -64,9 +65,29 @@ public final class Util {
     styleLink.attr("href", "style.css");
     Element jqueryLink = doc.head().appendElement("script");
     jqueryLink.attr("type", "text/javascript");
-    jqueryLink.attr("src", "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
+    jqueryLink.attr("src",
+        "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
     Element exporterScriptLink = doc.head().appendElement("script");
     exporterScriptLink.attr("type", "text/javascript");
     exporterScriptLink.attr("src", "code.js");
+  }
+
+  public static void copyResources(File outputDir, boolean overwriteFiles)
+      throws IOException {
+    copyResource("code.js", outputDir, overwriteFiles);
+    copyResource("style.css", outputDir, overwriteFiles);
+  }
+  
+  private static void copyResource(String fileName, File outputDir, boolean overwriteFiles)
+      throws IOException {
+    ClassLoader classLoader = Util.class.getClassLoader();
+    File target = new File(outputDir, fileName);
+    if (target.exists() && !overwriteFiles) {
+      throw new IOException(String.format(
+          "Output file '%s' already exists and overwriting is disabled",
+          target.toString()));
+    }
+    File inputFile = new File(classLoader.getResource(fileName).getFile());
+    Files.copy(inputFile.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
   }
 }

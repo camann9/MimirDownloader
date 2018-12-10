@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.amann.mimir_downloader.data.json.CompilatorEntry;
-import com.amann.mimir_downloader.data.json.CompilatorMap;
 import com.amann.mimir_downloader.data.json.CompilatorValue;
 import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.json.FileMapEntry;

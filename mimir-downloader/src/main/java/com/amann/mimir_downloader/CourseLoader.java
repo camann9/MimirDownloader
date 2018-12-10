@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.json.CourseAssignmentMetadata;
-import com.amann.mimir_downloader.data.json.RawAssignment;
 import com.amann.mimir_downloader.data.json.RawCourse;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
