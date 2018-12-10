@@ -6,12 +6,16 @@ import java.util.List;
 public class RawAssignmentMetadata {
   // IDs of questions in order
   List<String> questionOrder;
+  String id;
   String name;
   // HTML
   String description;
 
   public List<String> getQuestionOrder() {
     return questionOrder;
+  }
+  public String getId() {
+    return id;
   }
   public String getName() {
     return name;

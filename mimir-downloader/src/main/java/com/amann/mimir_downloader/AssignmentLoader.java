@@ -55,8 +55,8 @@ public final class AssignmentLoader {
   private static Assignment processAssignment(RawAssignment rawAssignment)
       throws ParseException {
     RawAssignmentMetadata rawMetadata = rawAssignment.getAssignment();
-    Assignment assignment = new Assignment(rawMetadata.getName(),
-        rawMetadata.getDescription());
+    Assignment assignment = new Assignment(rawMetadata.getId(),
+        rawMetadata.getName(), rawMetadata.getDescription());
 
     // We need to map questions by ID to later retrieve them by the IDs in the
     // question order

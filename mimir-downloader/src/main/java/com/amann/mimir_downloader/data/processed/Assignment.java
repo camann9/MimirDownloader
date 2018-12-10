@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Assignment {
+  private String id;
   private String name;
   private String description;
   private List<Question> questions = new ArrayList<>();
 
-  public Assignment(String name, String description) {
+  public Assignment(String id, String name, String description) {
+    this.id = id;
     this.name = name;
     this.description = description;
   }
@@ -19,6 +21,10 @@ public final class Assignment {
 
   public void addQuestion(Question question) {
     questions.add(question);
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getName() {

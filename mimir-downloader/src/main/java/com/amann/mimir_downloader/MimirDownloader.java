@@ -97,8 +97,7 @@ public class MimirDownloader {
   private static void saveCourseSingleFile(Course course, String target,
       boolean overwriteFiles) throws IOException, Exception {
     File targetFile = new File(target);
-    Util.checkShouldOverwrite(targetFile, overwriteFiles);
-    SingleFileCourseWriter.writeCourse(course, targetFile);
+    SingleFileCourseWriter.writeCourse(course, targetFile, overwriteFiles);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd,

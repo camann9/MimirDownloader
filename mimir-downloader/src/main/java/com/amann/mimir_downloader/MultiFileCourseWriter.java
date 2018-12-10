@@ -11,21 +11,17 @@ import com.amann.mimir_downloader.data.processed.Course;
 
 public final class MultiFileCourseWriter {
   public static void writeCourse(Course course, File folder,
-      boolean overwrite) throws Exception {
+      boolean overwriteFiles) throws Exception {
     // First write index of assignments\
     File target = new File(folder, "index.html");
-    if (target.exists() && !overwrite) {
-      throw new IOException(String.format(
-          "Output file '%s' already exists and overwriting is disabled",
-          target.toString()));
-    }
+    Util.checkShouldOverwrite(target, overwriteFiles);
     Document doc = Document.createShell("fake_url");
     generateHtml(course, doc);
     Util.printToFile(doc, target);
 
     // Then write actual assignments
     for (Assignment assignment : course.getAssignments()) {
-      AssignmentWriter.writeAssignment(assignment, folder, overwrite);
+      AssignmentWriter.writeAssignment(assignment, folder, overwriteFiles);
     }
   }
 
