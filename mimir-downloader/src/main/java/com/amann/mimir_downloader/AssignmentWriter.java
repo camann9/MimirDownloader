@@ -47,8 +47,8 @@ public final class AssignmentWriter {
 
   private static void generateBody(Assignment assignment, Element body) {
     Element header = body.appendElement("h1").text(assignment.getName());
-    header.appendElement("a").addClass("examModeToggle").text("[exam mode]")
-        .attr("title", "exam mode on/off");
+    header.appendElement("a").addClass("examModeToggle").text("[hide answers]")
+        .attr("title", "Hide/unhide answers (exam mode)");
 
     body.appendChild(new Element("div").html(assignment.getDescription())
         .addClass("assignmentDescription"));
