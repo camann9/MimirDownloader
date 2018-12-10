@@ -1,7 +1,7 @@
 Example course URLs
 
-https://class.mimir.io/lms/assignments/9ecba34a-62c6-45a4-b24c-eb20b6fa7d5c/edit
-https://class.mimir.io/lms/courses/a89ae18c-d2af-493a-a9fc-08f28f689eaa
+https://class.mimir.io/lms/assignments/325345645-5676-8909-8009-5686787iu/edit
+https://class.mimir.io/lms/courses/fgh6y544-hr64-ty46-tuhj-hkhjkhjk76
 
 Login
 https://class.mimir.io/lms/user_sessions

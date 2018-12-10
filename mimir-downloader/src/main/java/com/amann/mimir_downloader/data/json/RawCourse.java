@@ -5,7 +5,8 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public final class RawCourse {
-  private String name;
+  @SerializedName("course")
+  private RawCourseMetadata metadata;
   @SerializedName("allCoursework")
   private List<CourseAssignmentMetadata> assignments;
 
@@ -13,15 +14,7 @@ public final class RawCourse {
     return assignments;
   }
 
-  public void setAssignments(List<CourseAssignmentMetadata> assignments) {
-    this.assignments = assignments;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  public RawCourseMetadata getMetadata() {
+    return metadata;
   }
 }

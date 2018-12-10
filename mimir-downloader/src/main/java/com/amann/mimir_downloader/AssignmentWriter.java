@@ -27,7 +27,8 @@ import com.amann.mimir_downloader.data.processed.UnitTestCase;
 public final class AssignmentWriter {
   public static void writeAssignment(Assignment assignment, File folder,
       boolean overwrite) throws Exception {
-    File target = new File(folder, assignmentFileName(assignment.getName()));
+    File target = new File(folder,
+        Util.assignmentFileName(assignment.getName()));
     if (target.exists() && !overwrite) {
       throw new IOException(String.format(
           "Output file '%s' already exists and overwriting is disabled",
@@ -41,6 +42,10 @@ public final class AssignmentWriter {
 
   private static void generateHtml(Assignment assignment, Document doc) {
     doc.title(assignment.getName());
+    Element styleLink = doc.head().appendElement("link");
+    styleLink.attr("rel", "stylesheet");
+    styleLink.attr("type", "text/css");
+    styleLink.attr("href", "style.css");
     generateBody(assignment, doc.body());
   }
 
@@ -159,17 +164,17 @@ public final class AssignmentWriter {
   private static Element generateIoTestCase(IoTestCase testCase) {
     Element div = new Element("div");
     div.appendElement("h5").text("Input");
-    div.appendElement("div").text(testCase.getInput()).addClass("ioInput");
+    div.appendElement("code").text(testCase.getInput()).addClass("ioInput");
     div.appendElement("h5").text("Expected output");
-    div.appendElement("div").text(testCase.getExpectedOutput())
-        .addClass("ioOutput");
+    div.appendElement("pre").appendElement("code")
+        .text(testCase.getExpectedOutput()).addClass("ioOutput");
     return div;
   }
 
   private static Element generateUnitTestCase(UnitTestCase testCase) {
     Element div = new Element("div");
     div.appendElement("h5").text("Test code");
-    div.appendElement("div").text(testCase.getTestCode())
+    div.appendElement("pre").appendElement("code").text(testCase.getTestCode())
         .addClass("unitTestCode");
     return div;
   }
@@ -177,8 +182,8 @@ public final class AssignmentWriter {
   private static Element generateCustomTestCase(CustomTestCase testCase) {
     Element div = new Element("div");
     div.appendElement("h5").text("Test bash script");
-    div.appendElement("div").text(testCase.getTestBashScript())
-        .addClass("bashScript");
+    div.appendElement("pre").appendElement("code")
+        .text(testCase.getTestBashScript()).addClass("bashScript");
     return div;
   }
 
@@ -187,14 +192,10 @@ public final class AssignmentWriter {
     for (CodeFile file : fileList) {
       Element fileDiv = new Element("div");
       fileDiv.appendElement("h4").text(file.getFileName());
-      fileDiv.appendElement("div").text(file.getContent())
+      fileDiv.appendElement("pre").appendElement("code").text(file.getContent())
           .addClass("codeFileField");
       filesDiv.appendChild(fileDiv);
     }
     return filesDiv;
-  }
-
-  private static String assignmentFileName(String name) {
-    return name.replaceAll("[^a-zA-Z _0-9]", "").replaceAll(" ", "_") + ".html";
   }
 }

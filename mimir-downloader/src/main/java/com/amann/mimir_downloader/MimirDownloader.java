@@ -12,6 +12,7 @@ import org.apache.commons.cli.Options;
 
 import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.processed.Assignment;
+import com.amann.mimir_downloader.data.processed.Course;
 
 public class MimirDownloader {
   public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target folder>";
@@ -45,10 +46,12 @@ public class MimirDownloader {
     String home = System.getProperty("user.home");
     File downloaderRoot = new File(home, ".mimir_downloader");
     Util.createDir(downloaderRoot);
-    /*
-     * Config config = getAuthConfigFromArgs(cmd, downloaderRoot); if (config ==
-     * null) { formatter.printHelp(HELP_PREFIX, options); return; }
-     */
+
+    Config config = getAuthConfigFromArgs(cmd, downloaderRoot);
+    if (config == null) {
+      formatter.printHelp(HELP_PREFIX, options);
+      return;
+    }
 
     String courseId = CourseLoader.getCourseId(courseUrl);
     if (courseId == null) {
@@ -57,15 +60,18 @@ public class MimirDownloader {
       formatter.printHelp(HELP_PREFIX, options);
       return;
     }
-    /*
-     * Course course = CourseLoader.loadCourse(courseId, config);
-     * CourseWriter.writeCourse(course.getName(), assignments, targetFolder,
-     * overwriteFiles);
-     */
-    Assignment parsedAssignment = AssignmentLoader
-        .loadAssignmentFromFile(new File("realAssignment.json"));
-    AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
-        overwriteFiles);
+
+//    Course course = CourseLoader.loadCourse(courseId, config);
+//    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+    
+    // Course course = CourseLoader.loadCourseFromFile(new
+    // File("realCourse.json"));
+    // CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+
+     Assignment parsedAssignment = AssignmentLoader
+         .loadAssignmentFromFile(new File("realAssignment2.json"));
+     AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
+         overwriteFiles);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd,

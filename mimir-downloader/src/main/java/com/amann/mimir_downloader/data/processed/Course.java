@@ -18,4 +18,8 @@ public class Course {
   public void addAssignment(Assignment assignment) {
     assignments.add(assignment);
   }
+
+  public String getName() {
+    return name;
+  }
 }

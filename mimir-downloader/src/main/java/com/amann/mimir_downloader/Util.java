@@ -49,4 +49,7 @@ public final class Util {
     }
   }
 
+  public static String assignmentFileName(String name) {
+    return name.replaceAll("[^a-zA-Z _0-9]", "").replaceAll(" ", "_") + ".html";
+  }
 }
