@@ -46,7 +46,9 @@ public final class AssignmentWriter {
   }
 
   private static void generateBody(Assignment assignment, Element body) {
-    body.appendChild(new Element("h1").text(assignment.getName()));
+    Element header = body.appendElement("h1").text(assignment.getName());
+    header.appendElement("a").addClass("examModeToggle").text("[exam mode]")
+        .attr("title", "exam mode on/off");
 
     body.appendChild(new Element("div").html(assignment.getDescription())
         .addClass("assignmentDescription"));
@@ -128,9 +130,12 @@ public final class AssignmentWriter {
   private static Element generateCodingQuestion(CodingQuestion question) {
     Element reviewDiv = new Element("div").addClass("codingQuestion");
     reviewDiv.appendElement("h3").text("Starter code");
-    reviewDiv.appendChild(generateFileList(question.getStarterCode()));
+    reviewDiv.appendChild(
+        generateFileList(question.getStarterCode()).addClass("starterCode"));
     reviewDiv.appendElement("h3").text("Correct code");
-    reviewDiv.appendChild(generateFileList(question.getCorrectCode()));
+    reviewDiv.appendChild(
+        generateFileList(question.getCorrectCode()).addClass("correctCode"));
+    reviewDiv.appendElement("div").addClass("examModeContainer");
     Element testCaseHeader = reviewDiv.appendElement("h3").text("Test cases");
     testCaseHeader.appendElement("a").text("[+]").addClass("hideLink")
         .attr("title", "hide/unhide test cases");

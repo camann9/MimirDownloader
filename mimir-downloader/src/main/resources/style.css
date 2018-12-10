@@ -32,6 +32,12 @@ h5 {
   margin-bottom: 5px;
 }
 
+body {counter-reset: h2counter}
+h2:before {
+  counter-increment: h2counter;
+  content: "Question " counter(h2counter) ": ";
+}
+
 .testCases.hidden h4 {
   font-size: medium;
   font-weight:normal;
@@ -82,4 +88,22 @@ div.questionDescription {
   padding-left: 5px;
   color: steelblue;
   font-size: small;
+}
+
+.examModeToggle {
+  padding-left: 5px;
+  color: steelblue;
+  font-size: small;
+}
+
+.examMode .correctCode  {
+  display: none;
+}
+
+.examMode .examModeContainer::before  {
+  content: "Hidden in exam mode";
+}
+
+.examMode input {
+  display:none;
 }
