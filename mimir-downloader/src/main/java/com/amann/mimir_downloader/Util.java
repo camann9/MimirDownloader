@@ -83,11 +83,7 @@ public final class Util {
   private static void copyResource(String fileName, File outputDir, boolean overwriteFiles)
       throws IOException {
     File target = new File(outputDir, fileName);
-    if (target.exists() && !overwriteFiles) {
-      throw new IOException(String.format(
-          "Output file '%s' already exists and overwriting is disabled",
-          target.toString()));
-    }
+    checkShouldOverwrite(target, overwriteFiles);
     
     // We're going the complicated route since this also works with resources in JAR files
     ClassLoader classLoader = Util.class.getClassLoader();
@@ -95,6 +91,15 @@ public final class Util {
       try (FileOutputStream output = new FileOutputStream(target)) {
         ByteStreams.copy(input, output);
       }
+    }
+  }
+
+  public static void checkShouldOverwrite(File target, boolean overwriteFiles)
+      throws IOException {
+    if (target.exists() && !overwriteFiles) {
+      throw new IOException(String.format(
+          "Output file '%s' already exists and overwriting is disabled",
+          target.toString()));
     }
   }
 }

@@ -15,33 +15,38 @@ import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
 
 public class MimirDownloader {
-  public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target folder>";
+  public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target (folder for multi-file)>";
 
   public static void main(String[] args) throws Exception {
     Options options = new Options();
     options.addOption("u", "user", true, "mimir user name (email)");
     options.addOption("p", "password", true, "mimir password");
-    options.addOption("f", "force", false,
-        "force overwriting files in existing directory");
+    options.addOption("o", "overwrite", false,
+        "overwriting existing files in directory");
+    options.addOption("f", "format", true,
+        "ouput format: either multi-file (default) or single-file");
     options.addOption("h", "help", false, "print help");
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
     CommandLine cmd = parser.parse(options, args);
+    
     List<String> otherArgs = cmd.getArgList();
-    boolean overwriteFiles = cmd.hasOption('f');
-
     if (otherArgs.size() != 2 || cmd.hasOption('h')) {
       formatter.printHelp(HELP_PREFIX, options);
       return;
     }
-
-    String courseUrl = otherArgs.get(0);
-    File targetFolder = new File(otherArgs.get(1));
-
-    if (!targetFolder.isDirectory() && !targetFolder.mkdirs()) {
-      System.out.println("Could not create output directory");
+    
+    String format = cmd.hasOption('f') ? cmd.getOptionValue('f') : "multi-file";
+    if (!(format.equals("multi-file") || format.equals("single-file"))) {
+      System.out.println("Invalid output format.");
+      formatter.printHelp(HELP_PREFIX, options);
       return;
     }
+    boolean isMultiFile = format.equals("multi-file");
+
+    String courseUrl = otherArgs.get(0);
+    String target = otherArgs.get(1);
+    boolean overwriteFiles = cmd.hasOption('o');
 
     String home = System.getProperty("user.home");
     File downloaderRoot = new File(home, ".mimir_downloader");
@@ -59,10 +64,14 @@ public class MimirDownloader {
       formatter.printHelp(HELP_PREFIX, options);
       return;
     }
-
-    Util.copyResources(targetFolder, overwriteFiles);
+    
     Course course = CourseLoader.loadCourse(courseId, config);
-    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+
+    if (isMultiFile) {
+      saveCourseMultiFile(course, target, overwriteFiles);
+    } else {
+      saveCourseSingleFile(course, target, overwriteFiles);
+    }
 
 //    Course course = CourseLoader
 //        .loadCourseFromFile(new File("realCourse.json"));
@@ -72,6 +81,24 @@ public class MimirDownloader {
 //         .loadAssignmentFromFile(new File("realAssignment2.json"));
 //     AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
 //         overwriteFiles);
+  }
+
+  private static void saveCourseMultiFile(Course course, String target,
+      boolean overwriteFiles) throws IOException, Exception {
+    File targetFolder = new File(target);
+    if (!targetFolder.isDirectory() && !targetFolder.mkdirs()) {
+      System.out.println("Could not create output directory");
+      return;
+    }
+    Util.copyResources(targetFolder, overwriteFiles);
+    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+  }
+  
+  private static void saveCourseSingleFile(Course course, String target,
+      boolean overwriteFiles) throws IOException, Exception {
+    File targetFile = new File(target);
+    Util.checkShouldOverwrite(targetFile, overwriteFiles);
+    SingleFileCourseWriter.writeCourse(course, targetFile);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd,
