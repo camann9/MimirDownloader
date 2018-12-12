@@ -4,7 +4,7 @@ Downloads Mimir assignments for a course and converts them to HTML.
 
 ## Download
 
-See [current release](https://github.com/camann9/MimirDownloader/releases/download/1.0/MimirDownloader-jar-with-dependencies.jar).
+See [current release](https://github.com/camann9/MimirDownloader/releases/latest).
 
 ## Run
 
