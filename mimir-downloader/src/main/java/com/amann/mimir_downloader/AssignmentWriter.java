@@ -215,4 +215,59 @@ public final class AssignmentWriter {
     }
     return filesDiv;
   }
+  
+  public static void generateShortQuestion(Question question, Element parent) {
+    if (question instanceof ShortAnswerQuestion || question instanceof LongAnswerQuestion || question instanceof FileUploadQuestion) {
+      // Ignore, nothing to do
+    } else if (question instanceof CheckboxQuestion) {
+      generateShortAnswerList(((CheckboxQuestion) question).getAnswers(), parent);
+    } else if (question instanceof MultipleChoiceQuestion) {
+      generateShortAnswerList(((MultipleChoiceQuestion) question).getAnswers(), parent);
+    } else if (question instanceof CodeReviewQuestion) {
+      generateShortCodeReviewQuestion((CodeReviewQuestion) question, parent);
+    } else if (question instanceof CodingQuestion) {
+      generateShortCodingQuestion((CodingQuestion) question, parent);
+    } else {
+      throw new IllegalArgumentException(
+          "Unknown type of question: " + question.getClass().getSimpleName());
+    }
+  }
+
+  private static void generateShortFileList(List<CodeFile> fileList,
+      Element parent) {
+    for (CodeFile file : fileList) {
+      if (fileList.size() > 1) {
+        // Only output file name in case we have multiple files
+        parent.appendElement("b").text(file.getFileName());
+      }
+      parent.appendElement("pre").appendElement("code").text(file.getContent());
+    }
+  }
+
+  private static void generateShortAnswerList(
+      List<String> answers, Element parent) {
+    Element choicesList = parent.appendElement("ul");
+    for (String answer : answers) {
+      choicesList.appendElement("li").text(answer);
+    }
+  }
+  
+  private static void generateShortCodingQuestion(CodingQuestion question, Element parent) {
+    parent.appendElement("h3").text("Starter code");
+    generateShortFileList(question.getStarterCode(), parent);
+    parent.appendElement("h3").text("Test cases");
+    generateShortTestCases(question.getTestCases(), parent);
+  }
+  
+  private static void generateShortCodeReviewQuestion(CodeReviewQuestion question, Element parent) {
+    parent.appendElement("h3").text("Code to review");
+    generateShortFileList(question.getStarterCode(), parent);
+  }
+
+  private static void generateShortTestCases(List<CodeTestCase> testCases, Element parent) {
+    Element testCaseList = parent.appendElement("ul");
+    for (CodeTestCase testCase : testCases) {
+      testCaseList.appendElement("li").text(testCase.getName());
+    }
+  }
 }

@@ -75,12 +75,10 @@ public class MimirDownloader {
 
 //    Course course = CourseLoader
 //        .loadCourseFromFile(new File("realCourse.json"));
-//    CourseWriter.writeCourse(course, targetFolder, overwriteFiles);
-
-//     Assignment parsedAssignment = AssignmentLoader
-//         .loadAssignmentFromFile(new File("realAssignment2.json"));
-//     AssignmentWriter.writeAssignment(parsedAssignment, targetFolder,
-//         overwriteFiles);
+//    Assignment parsedAssignment = AssignmentLoader
+//        .loadAssignmentFromFile(new File("realAssignment2.json"));
+//    course.addAssignment(parsedAssignment);
+//    SingleFileCourseWriter.writeCourse(course, new File(target), overwriteFiles);
   }
 
   private static void saveCourseMultiFile(Course course, String target,

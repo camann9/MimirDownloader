@@ -40,7 +40,6 @@ public final class CourseLoader {
 
     raw.getAssignments().sort(new AssignmentDateComparator());
     for (CourseAssignmentMetadata a : raw.getAssignments()) {
-      System.out.format("Loading assignment %s (%s)\n", a.getName(), a.getId());
       course.addAssignment(new Assignment(a.getId(), a.getName(), ""));
     }
     return course;
