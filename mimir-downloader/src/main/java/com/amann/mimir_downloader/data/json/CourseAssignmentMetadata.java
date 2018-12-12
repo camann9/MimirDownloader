@@ -6,6 +6,7 @@ import java.time.Instant;
 public final class CourseAssignmentMetadata {
   private String id;
   private String name;
+  private String workType;
   private Instant openDate;
 
   public String getName() {
@@ -14,6 +15,10 @@ public final class CourseAssignmentMetadata {
 
   public String getId() {
     return id;
+  }
+
+  public String getWorkType() {
+    return workType;
   }
 
   public Instant getOpenDate() {

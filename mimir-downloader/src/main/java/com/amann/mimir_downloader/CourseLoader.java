@@ -27,8 +27,12 @@ public final class CourseLoader {
 
     raw.getAssignments().sort(new AssignmentDateComparator());
     for (CourseAssignmentMetadata a : raw.getAssignments()) {
-      System.out.format("Loading assignment %s (%s)\n", a.getName(), a.getId());
-      course.addAssignment(AssignmentLoader.loadAssignment(a.getId(), config));
+      if (a.getWorkType().equals("assignment")) {
+        System.out.format("Loading assignment %s (%s)\n", a.getName(), a.getId());
+        course.addAssignment(AssignmentLoader.loadAssignment(a.getId(), config));
+      } else {
+        System.out.format("Unsupported type of coursework %s in '%s'\n", a.getWorkType(), a.getName());
+      }
     }
     return course;
   }
