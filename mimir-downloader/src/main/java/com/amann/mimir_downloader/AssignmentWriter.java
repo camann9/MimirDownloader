@@ -1,7 +1,9 @@
 package com.amann.mimir_downloader;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 import org.jsoup.nodes.Document;
@@ -37,6 +39,11 @@ public final class AssignmentWriter {
     Document doc = Document.createShell("fake_url");
     generateHtml(assignment, doc);
     Util.printToFile(doc, target);
+  }
+
+  public static void writeAssignmentCodeTree(Assignment assignment, File folder,
+      boolean overwrite) throws Exception {
+    generateTreeAssignment(assignment, folder, overwrite);
   }
 
   private static void generateHtml(Assignment assignment, Document doc) {
@@ -215,7 +222,7 @@ public final class AssignmentWriter {
     }
     return filesDiv;
   }
-  
+
   public static void generateShortQuestion(Question question, Element parent) {
     if (question instanceof ShortAnswerQuestion || question instanceof LongAnswerQuestion || question instanceof FileUploadQuestion) {
       // Ignore, nothing to do
@@ -251,14 +258,14 @@ public final class AssignmentWriter {
       choicesList.appendElement("li").text(answer);
     }
   }
-  
+
   private static void generateShortCodingQuestion(CodingQuestion question, Element parent) {
     parent.appendElement("h3").text("Starter code");
     generateShortFileList(question.getStarterCode(), parent);
     parent.appendElement("h3").text("Test cases");
     generateShortTestCases(question.getTestCases(), parent);
   }
-  
+
   private static void generateShortCodeReviewQuestion(CodeReviewQuestion question, Element parent) {
     parent.appendElement("h3").text("Code to review");
     generateShortFileList(question.getStarterCode(), parent);
@@ -270,4 +277,88 @@ public final class AssignmentWriter {
       testCaseList.appendElement("li").text(testCase.getName());
     }
   }
+
+  private static void generateTreeAssignment(Assignment assignment, File folder,
+      boolean overwrite) throws Exception {
+    File target = new File(folder,
+        Util.assignmentDirName(assignment.getName()));
+    if (target.exists() && !overwrite) {
+      throw new IOException(String.format(
+          "Output dir '%s' already exists and overwriting is disabled",
+          target.toString()));
+    }
+
+    // Nothing to write about the assignment, just recursively
+    // write the questions' content.
+    Util.createDir(target);
+    for (Question q : assignment.getQuestions()) {
+      generateTreeQuestion(q, target, overwrite);
+    }
+  }
+
+  private static void generateTreeQuestion(Question question, File folder,
+      boolean overwrite) throws Exception {
+    if (!(question instanceof CodingQuestion)) {
+      // Only coding questions generate file tree.
+      return;
+    }
+    CodingQuestion codingQuestion = (CodingQuestion) question;
+    File target = new File(folder,
+        Util.assignmentDirName(codingQuestion.getTitle()));
+    if (target.exists() && !overwrite) {
+      throw new IOException(String.format(
+          "Output dir '%s' already exists and overwriting is disabled",
+          target.toString()));
+    }
+
+    Util.createDir(target);
+
+    // Write subdirs for solution code, starter code and tests.
+    generateTreeCorrectFiles(codingQuestion.getCorrectCode(), target, overwrite);
+    generateTreeStarterFiles(codingQuestion.getStarterCode(), target, overwrite);
+    // generateTreeTestFiles(codingQuestion.getTestCases(), target, overwrite);
+
+    // Nothing to write about the assignment, just recursively
+    // write the questions' content.
+  }
+
+  private static void generateTreeCodeFiles(List<CodeFile> codeFiles,
+      String fileType, File folder, boolean overwrite) throws Exception {
+    File target = new File(folder, fileType);
+    if (target.exists() && !overwrite) {
+      throw new IOException(String.format(
+          "Output dir '%s' already exists and overwriting is disabled",
+          target.toString()));
+    }
+
+    Util.createDir(target);
+    for (CodeFile cf : codeFiles) {
+      writeCodeFile(cf, target, overwrite);
+    }
+  }
+
+  private static void generateTreeCorrectFiles(List<CodeFile> correctFiles,
+      File folder, boolean overwrite) throws Exception {
+    generateTreeCodeFiles(correctFiles, "correct_files", folder, overwrite);
+  }
+
+  private static void generateTreeStarterFiles(List<CodeFile> starterFiles,
+      File folder, boolean overwrite) throws Exception {
+    generateTreeCodeFiles(starterFiles, "starter_files", folder, overwrite);
+  }
+
+  public static final void writeCodeFile(CodeFile codeFile, File folder,
+      boolean overwrite) throws Exception {
+    File outputFile = new File(folder, codeFile.getFileName());
+    if (outputFile.exists() && !overwrite) {
+      throw new IOException(String.format(
+          "Output file '%s' already exists and overwriting is disabled",
+          outputFile.toString()));
+    }
+
+    try (Writer out = new FileWriter(outputFile)) {
+      out.write(codeFile.getContent());
+    }
+  }
+
 }

@@ -14,6 +14,12 @@ import com.amann.mimir_downloader.data.json.Config;
 import com.amann.mimir_downloader.data.processed.Assignment;
 import com.amann.mimir_downloader.data.processed.Course;
 
+enum OutputFormat {
+  SINGLE_FILE,
+  MULTI_FILE,
+  CODE_DIRECTORY
+};
+
 public class MimirDownloader {
   public static final String HELP_PREFIX = "mimir-downloader [OPTIONS] <course URL copied from browser> <target (folder for multi-file)>";
 
@@ -24,7 +30,7 @@ public class MimirDownloader {
     options.addOption("o", "overwrite", false,
         "overwriting existing files in directory");
     options.addOption("f", "format", true,
-        "ouput format: either multi-file (default) or single-file");
+        "ouput format: one of multi-file (default), single-file, code-directory");
     options.addOption("h", "help", false, "print help");
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
@@ -37,12 +43,22 @@ public class MimirDownloader {
     }
     
     String format = cmd.hasOption('f') ? cmd.getOptionValue('f') : "multi-file";
-    if (!(format.equals("multi-file") || format.equals("single-file"))) {
+    if (!(format.equals("multi-file")
+        || format.equals("single-file")
+        || format.equals("code-directory"))) {
       System.out.println("Invalid output format.");
       formatter.printHelp(HELP_PREFIX, options);
       return;
     }
-    boolean isMultiFile = format.equals("multi-file");
+    OutputFormat outputFormat;
+    if (format.equals("single-file")) {
+	outputFormat = OutputFormat.SINGLE_FILE;
+    } else if (format.equals("code-directory")) {
+	outputFormat = OutputFormat.CODE_DIRECTORY;
+    } else {
+	// format.equals("multi-file")
+	outputFormat = OutputFormat.MULTI_FILE;
+    }
 
     String courseUrl = otherArgs.get(0);
     String target = otherArgs.get(1);
@@ -67,18 +83,34 @@ public class MimirDownloader {
     
     Course course = CourseLoader.loadCourse(courseId, config);
 
-    if (isMultiFile) {
+    switch (outputFormat) {
+    case MULTI_FILE:
+    default:
       saveCourseMultiFile(course, target, overwriteFiles);
-    } else {
+      break;
+    case SINGLE_FILE:
       saveCourseSingleFile(course, target, overwriteFiles);
+      break;
+    case CODE_DIRECTORY:
+      saveCourseCodeDirectory(course, target, overwriteFiles);
+      break;
     }
+
+//     File targetFolder = new File(target);
 
 //    Course course = CourseLoader
 //        .loadCourseFromFile(new File("realCourse.json"));
+//     MultiFileCourseWriter.writeCourse(course, targetFolder, overwriteFiles);
+
 //    Assignment parsedAssignment = AssignmentLoader
 //        .loadAssignmentFromFile(new File("realAssignment2.json"));
 //    course.addAssignment(parsedAssignment);
 //    SingleFileCourseWriter.writeCourse(course, new File(target), overwriteFiles);
+
+//     Assignment parsedAssignment = AssignmentLoader
+//         .loadAssignmentFromFile(new File("assignment.json"));
+//     AssignmentWriter.writeAssignmentCodeTree(parsedAssignment, targetFolder,
+//         overwriteFiles);
   }
 
   private static void saveCourseMultiFile(Course course, String target,
@@ -96,6 +128,12 @@ public class MimirDownloader {
       boolean overwriteFiles) throws IOException, Exception {
     File targetFile = new File(target);
     SingleFileCourseWriter.writeCourse(course, targetFile, overwriteFiles);
+  }
+
+  private static void saveCourseCodeDirectory(Course course, String target,
+      boolean overwriteFiles) throws IOException, Exception {
+    File targetFile = new File(target);
+    DirectoryCourseWriter.writeCourse(course, targetFile, overwriteFiles);
   }
 
   private static Config getAuthConfigFromArgs(CommandLine cmd,
