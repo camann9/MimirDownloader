@@ -56,8 +56,16 @@ public final class Util {
     }
   }
 
+  public static String assignmentBaseName(String name) {
+    return name.replaceAll("[^a-zA-Z _0-9]", "").replaceAll(" ", "_");
+  }
+
   public static String assignmentFileName(String name) {
-    return name.replaceAll("[^a-zA-Z _0-9]", "").replaceAll(" ", "_") + ".html";
+    return assignmentBaseName(name) + ".html";
+  }
+
+  public static String assignmentDirName(String name) {
+    return assignmentBaseName(name);
   }
 
   public static void addHeaderElements(Document doc) {

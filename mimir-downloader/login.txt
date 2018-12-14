@@ -2,6 +2,9 @@ Example course URLs
 
 https://class.mimir.io/lms/assignments/325345645-5676-8909-8009-5686787iu/edit
 https://class.mimir.io/lms/courses/fgh6y544-hr64-ty46-tuhj-hkhjkhjk76
+// NC A&T COMP 163 (and assignment Homework 9)
+https://class.mimir.io/lms/courses/42769ca5-5b28-46e0-b4bb-d3d3858ce8f8
+https://class.mimir.io/lms/assignments/158eca8e-13e0-43ec-b6d0-f7e80a935988/edit
 
 Login
 https://class.mimir.io/lms/user_sessions
