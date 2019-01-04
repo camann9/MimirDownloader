@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public final class RawCourse {
   @SerializedName("course")
   private RawCourseMetadata metadata;
-  @SerializedName("allCoursework")
+  @SerializedName("coursework")
   private List<CourseAssignmentMetadata> assignments;
 
   public List<CourseAssignmentMetadata> getAssignments() {
